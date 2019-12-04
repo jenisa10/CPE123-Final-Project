@@ -2,13 +2,18 @@ var scene1;
 var scene2;
 var scene3;
 var time = 60;
+var grass_g=[];
+var grass_b=[];
+var grass_x=[];
+var grass_y=[];
+var grass_dx=[];
+var grass_dy=[];
 
 function setup(){
     createCanvas(1200, 800); 
     scene1 = true;
     scene2 = false;
     scene3 = false; 
-    //setInterval(timer, 1000);
     grass_initialize();
 }
 
@@ -18,11 +23,10 @@ function draw(){
     }
     if (scene2 == true) {
         back();
-        grass();
-        court();
         board();
         timer();
-        //noLoop(); need to fix loop of grass
+        grass();
+        court();        
     } 
     if (scene3 == true){
         endPage();
@@ -35,6 +39,7 @@ function back(){
     var color1 = color(0, 140, 200);
     var color2 = color(255, 165, 200);
     setGradient(0, 0, width, 500, color1, color2, "Y");
+    noStroke();
     fill(100);
     rect(1050, 0, 150, 50);
     fill(100);
@@ -45,39 +50,35 @@ function back(){
 }
 
 function court(){
-    // noStroke();
-    // fill(150, 230, 150);
-    // rect(0, 470, width, height);
-    //fill(255, 182, 255);
-    strokeWeight(8);
-    stroke(255);
-    fill(255, 182, 180);
-    quad(50, 750, 100, 500, 1100, 500, 1150, 750); 
-    stroke(255);
-    strokeWeight(5);
-    line(70, 750, 120, 500);
-    line(1080, 500, 1130, 750);
-    line(95, 520, 1105, 520);
-    line(55, 730, 1145, 730);
-    // line(75, 625, 475, 625);
-    // line(750, 625, 1120, 625);
-    line(450, 500, 425, 750);
-    line(750, 500, 775, 750);
-    line(440, 625, 760, 625);
-    strokeWeight(12);
-    stroke(150);
-    line(600, 500, 600, 440);
-    strokeWeight(5);
-    stroke(180);
-    line(600, 445, 600, 675);
-    stroke(150);
-    strokeWeight(12);
-    line(600, 750, 600, 680);
-    // strokeWeight(5);
-    // line(500, 450, 520, 530);
+    push();
+    translate(0, 50);
+        strokeWeight(8);
+        stroke(255);
+        fill(255, 182, 180);
+        quad(50, 700, 100, 500, 1100, 500, 1150, 700); 
+        stroke(255);
+        strokeWeight(5);
+        line(70, 700, 120, 500);
+        line(1080, 500, 1130, 700);
+        line(95, 520, 1105, 520);
+        line(55, 680, 1145, 680);
+        line(450, 500, 425, 700);
+        line(750, 500, 775, 700);
+        line(440, 600, 760, 600);
+        strokeWeight(12);
+        stroke(150);
+        line(600, 500, 600, 440);
+        strokeWeight(5);
+        stroke(180);
+        line(600, 445, 600, 675);
+        stroke(150);
+        strokeWeight(12);
+        line(600, 700, 600, 660);
+    pop();
 }
 
 function board(){
+    strokeWeight(12);
     stroke(100);
     fill(100);
     rect(350, 50, 500, 230, 20);
@@ -108,25 +109,7 @@ function timer(){
     }
 }
 
-var grass_g=[];
-var grass_b=[];
-var grass_x=[];
-var grass_y=[];
-var grass_dx=[];
-var grass_dy=[];
 function grass(){
-    /*for (var y=0; y < height; y+= 5){
-		for (var x=0; x < width; x+=5){
-            if  (impl_line(x, y, 0, 470, 1200, 470) > 0){
-                noStroke();
-                fill(50, grass_g[y*width+x], grass_b[y*width+x]);
-                ellipse(x + (random(-2, 2)), y + (random(-5, 5)), 5, 30);
-            }
-            else{
-                noFill();
-            }
-        }
-    }*/
     noStroke();
     for (var i=0;i<grass_x.length;++i){
         fill(50, grass_g[i], grass_b[i]);
@@ -162,9 +145,14 @@ function endPage(){
     fill(255);
     textFont('Courier New');
     textSize(100);
-    text('CONGRATULATIONS', 150, 100);
+    text('CONGRATULATIONS!', 150, 100);
     textSize(50);
-    text('Thank you for playing the game.', 100, 210);
+    text('Thank you for playing the game.', 150, 210);
+    text('Made with <3 by', 400, 280);
+    text('David Chen', 100, 380);
+    text('Veronica Guzman', 100, 480);
+    text('Iris Ho', 750, 380);
+    text('Jenisa Nguyen', 750, 480);
     fill(100);
     rect(365, 580, 500, 100);
     fill(255);
