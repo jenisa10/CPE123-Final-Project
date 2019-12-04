@@ -22,7 +22,8 @@ function draw(){
         title(); 
     }
     if (scene2 == true) {
-        back();
+        back(); 
+        drawMounts(250, 50, 120, 220, 0.005);
         board();
         timer();
         grass();
@@ -39,6 +40,7 @@ function back(){
     var color1 = color(0, 140, 200);
     var color2 = color(255, 165, 200);
     setGradient(0, 0, width, 500, color1, color2, "Y");
+  
     noStroke();
     fill(100);
     rect(1050, 0, 150, 50);
@@ -132,12 +134,12 @@ function grass_initialize(){
 	}
 }
 
-function stand(){
-    stroke(170);
-    fill(190);
-    quad(100, 340, 1100, 340, 1050, 460, 150, 460);
-    rect(140, 450, 910, 10);
-
+function drawMounts(peak, range, color, scale, noiseScale) {
+    for (var x=0; x < width; x++) {
+      var noiseVal = noise((500+x)*noiseScale, 500*noiseScale);
+      stroke(color, range);
+      line(x, (peak) + noiseVal*scale, x, height);
+    }
 }
 
 function endPage(){
