@@ -1,6 +1,6 @@
 var handR;
-var locx=200;
-var locy=200;
+var locx=300;
+var locy=300;
 
 function setup()
 {
@@ -12,7 +12,7 @@ function setup()
 function draw()
 {
 	background(255);
-	draw_dinosaur(locx, locy, .3);
+	draw_dinosaur(locx, locy, 1);
 	dinoMovement();
 }
 
@@ -113,25 +113,51 @@ function draw_dinosaur(x, y, sc)
 		fill(0, 190, 4);
 		strokeWeight(1);
 		stroke(0);
-
+		//hand that won't move
 		push();
-		translate(-40, 0);
-		rotate(PI/7);
-		beginShape();
-		vertex(0, 0);
-		vertex(-18, 15);
-		vertex(2, 15);
-		endShape();
+			translate(-40, 0);
+			rotate(PI/7);
+			beginShape();
+			vertex(0, 0);
+			vertex(-18, 15);
+			vertex(2, 15);
+			endShape();
 		pop();
-
+		//hand that moves
 		push();
-		translate(17, 0);
-		rotate(handR);
-		beginShape();
-		vertex(0, 0);
-		vertex(-24, 15);
-		vertex(-2, 15);
-		endShape();
+			translate(17, 0);
+			rotate(handR);
+
+			push();
+				//racket
+				translate(-30, 15);
+				rotate(2*PI/3)
+				scale(sc*2.3);
+				fill(0);
+				rect(-6, -14, 4, 30);
+				rect(-4, 15, 1, 80);
+				fill(255);
+				stroke(0);
+				ellipse(0, 105, 45, 80);
+				line(0, 145, 0, 65);
+				line(-10, 140, -10, 70);
+				line(-20, 125, -20, 85);
+				line(10, 140, 10, 70);
+				line(20, 120, 20, 89);
+				line(-22, 105, 22, 105);
+				line(-22, 95, 21, 95);
+				line(-20, 85, 20, 85);
+				line(-15, 75, 15, 75);
+				line(-22, 115, 20, 115);
+				line(-20, 125, 19, 125);
+				line(-15, 135, 14, 135);
+			pop();
+
+			beginShape();
+			vertex(0, 0);
+			vertex(-24, 15);
+			vertex(-2, 15);
+			endShape();
 		pop();
 
 	pop();
@@ -160,4 +186,8 @@ function dinoMovement()
 		}
 }
 
- 
+function racket(){
+	translate(x+17, y)
+	fill(255);
+	ellipse(0, 0, 20);
+ }
