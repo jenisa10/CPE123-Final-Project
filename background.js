@@ -10,171 +10,171 @@ var grass_dx=[];
 var grass_dy=[];
 
 function setup(){
-    createCanvas(1200, 800); 
-    scene1 = true;
-    scene2 = false;
-    scene3 = false; 
-    grass_initialize();
+	createCanvas(1200, 800); 
+	scene1 = true;
+	scene2 = false;
+	scene3 = false; 
+	grass_initialize();
 }
 
 function draw(){ 
-    if (scene1 == true) {
-        title(); 
-    }
-    if (scene2 == true) {
-        back(); 
-        drawMounts(250, 50, 120, 220, 0.005);
-        board();
-        timer();
-        grass();
-        court();        
-    } 
-    if (scene3 == true){
-        endPage();
-    }
+	if (scene1 == true) {
+		title(); 
+	}
+	if (scene2 == true) {
+		back(); 
+		drawMounts(250, 50, 120, 220, 0.005);
+		board();
+		timer();
+		grass();
+		court();		
+	} 
+	if (scene3 == true){
+		endPage();
+	}
 }
 
 function back(){
-    fill(180, 220, 255);
-    rect(0, 0, 1200, 800);
-    var color1 = color(0, 140, 200);
-    var color2 = color(255, 165, 200);
-    setGradient(0, 0, width, 500, color1, color2, "Y");
+	fill(180, 220, 255);
+	rect(0, 0, 1200, 800);
+	var color1 = color(0, 140, 200);
+	var color2 = color(255, 165, 200);
+	setGradient(0, 0, width, 500, color1, color2, "Y");
   
-    noStroke();
-    fill(100);
-    rect(1050, 0, 150, 50);
-    fill(100);
-    rect(0, 0, 150, 50);
-    fill(255);
-    text('HOME', 25, 40);
-    text('END', 1090, 40);
+	noStroke();
+	fill(100);
+	rect(1050, 0, 150, 50);
+	fill(100);
+	rect(0, 0, 150, 50);
+	fill(255);
+	text('HOME', 25, 40);
+	text('END', 1090, 40);
 }
 
 function court(){
-    push();
-    translate(0, 50);
-        strokeWeight(8);
-        stroke(255);
-        fill(255, 182, 180);
-        quad(50, 700, 100, 500, 1100, 500, 1150, 700); 
-        stroke(255);
-        strokeWeight(5);
-        line(70, 700, 120, 500);
-        line(1080, 500, 1130, 700);
-        line(95, 520, 1105, 520);
-        line(55, 680, 1145, 680);
-        line(450, 500, 425, 700);
-        line(750, 500, 775, 700);
-        line(440, 600, 760, 600);
-        strokeWeight(12);
-        stroke(150);
-        line(600, 500, 600, 440);
-        strokeWeight(5);
-        stroke(180);
-        line(600, 445, 600, 675);
-        stroke(150);
-        strokeWeight(12);
-        line(600, 700, 600, 660);
-    pop();
+	push();
+	translate(0, 50);
+		strokeWeight(8);
+		stroke(255);
+		fill(255, 182, 180);
+		quad(50, 700, 100, 500, 1100, 500, 1150, 700); 
+		stroke(255);
+		strokeWeight(5);
+		line(70, 700, 120, 500);
+		line(1080, 500, 1130, 700);
+		line(95, 520, 1105, 520);
+		line(55, 680, 1145, 680);
+		line(450, 500, 425, 700);
+		line(750, 500, 775, 700);
+		line(440, 600, 760, 600);
+		strokeWeight(12);
+		stroke(150);
+		line(600, 500, 600, 440);
+		strokeWeight(5);
+		stroke(180);
+		line(600, 445, 600, 675);
+		stroke(150);
+		strokeWeight(12);
+		line(600, 700, 600, 660);
+	pop();
 }
 
 function board(){
-    strokeWeight(12);
-    stroke(100);
-    fill(100);
-    rect(350, 50, 500, 230, 20);
-    line(450, 200, 450, 470);
-    line(750, 200, 750, 470);
-    stroke(255);
-    strokeWeight(2);
-    line(345, 230, 855, 230);
-    line(345, 110, 855, 110);
-    line(600, 45, 600, 110);
-    fill(255);
-    noStroke();
-    textSize(36);
-    textFont('Courier New');
-    text('TIME', 400, 270);
-    text('Player 1', 380, 90);
-    text('Player 2', 640, 90);
-    //time
-    if(time <= 60){
-        fill(255);
-        text(time, width/2, 270);
-    }
+	strokeWeight(12);
+	stroke(100);
+	fill(100);
+	rect(350, 50, 500, 230, 20);
+	line(450, 200, 450, 470);
+	line(750, 200, 750, 470);
+	stroke(255);
+	strokeWeight(2);
+	line(345, 230, 855, 230);
+	line(345, 110, 855, 110);
+	line(600, 45, 600, 110);
+	fill(255);
+	noStroke();
+	textSize(36);
+	textFont('Courier New');
+	text('TIME', 400, 270);
+	text('Player 1', 380, 90);
+	text('Player 2', 640, 90);
+	//time
+	if(time <= 60){
+		fill(255);
+		text(time, width/2, 270);
+	}
 }
 
 function timer(){
-    if (frameCount % 6 == 0 && time > 0){
-        time --;
-    }
+	if (frameCount % 6 == 0 && time > 0){
+		time --;
+	}
 }
 
 function grass(){
-    noStroke();
-    for (var i=0;i<grass_x.length;++i){
-        fill(50, grass_g[i], grass_b[i]);
-        ellipse(grass_x[i]+grass_dx[i], grass_y[i]+grass_dy[i], 5, 30);
-    }
+	noStroke();
+	for (var i=0;i<grass_x.length;++i){
+		fill(50, grass_g[i], grass_b[i]);
+		ellipse(grass_x[i]+grass_dx[i], grass_y[i]+grass_dy[i], 5, 30);
+	}
 }
 
 function grass_initialize(){
-    for (var y=0; y < height; y+= 5){
+	for (var y=0; y < height; y+= 5){
 		for (var x=0; x < width; x+=5){
-            if  (impl_line(x, y, 0, 470, 1200, 470) > 0){
-                grass_g.push(random(180,240));
-                grass_b.push(random(150,180));
-                grass_dx.push(random(-2,2));
-                grass_dy.push(random(-5,5));
-                grass_x.push(x);
-                grass_y.push(y);
-            }
-        }
+			if  (impl_line(x, y, 0, 470, 1200, 470) > 0){
+				grass_g.push(random(180,240));
+				grass_b.push(random(150,180));
+				grass_dx.push(random(-2,2));
+				grass_dy.push(random(-5,5));
+				grass_x.push(x);
+				grass_y.push(y);
+			}
+		}
 	}
 }
 
 function drawMounts(peak, range, color, scale, noiseScale) {
-    for (var x=0; x < width; x++) {
-      var noiseVal = noise((500+x)*noiseScale, 500*noiseScale);
-      stroke(color, range);
-      line(x, (peak) + noiseVal*scale, x, height);
-    }
+	for (var x=0; x < width; x++) {
+	  var noiseVal = noise((500+x)*noiseScale, 500*noiseScale);
+	  stroke(color, range);
+	  line(x, (peak) + noiseVal*scale, x, height);
+	}
 }
 
 function endPage(){
-    background(120, 180, 150);
-    fill(255);
-    textFont('Courier New');
-    textSize(100);
-    text('CONGRATULATIONS!', 150, 100);
-    textSize(50);
-    text('Thank you for playing the game.', 150, 210);
-    text('Made with <3 by', 400, 280);
-    text('David Chen', 100, 380);
-    text('Veronica Guzman', 100, 480);
-    text('Iris Ho', 750, 380);
-    text('Jenisa Nguyen', 750, 480);
-    fill(100);
-    rect(365, 580, 500, 100);
-    fill(255);
-    textSize(70);
-    text('PLAY AGAIN', 400, 645);
+	background(120, 180, 150);
+	fill(255);
+	textFont('Courier New');
+	textSize(100);
+	text('CONGRATULATIONS!', 150, 100);
+	textSize(50);
+	text('Thank you for playing the game.', 150, 210);
+	text('Made with <3 by', 400, 280);
+	text('David Chen', 100, 380);
+	text('Veronica Guzman', 100, 480);
+	text('Iris Ho', 750, 380);
+	text('Jenisa Nguyen', 750, 480);
+	fill(100);
+	rect(365, 580, 500, 100);
+	fill(255);
+	textSize(70);
+	text('PLAY AGAIN', 400, 645);
 }
 
 function title(){
-    background(230, 200, 230);
-    fill(255);
-    textFont('Courier New');
-    textSize(80);
-    text('T-Rex Plays Badminton', 100, 100);
-    fill(255);
-    ellipse(600, 400, 100);
-    fill(100);
-    rect(400, 540, 400, 160);
-    fill(255);
-    textSize(90);
-    text('START', 460, 645);
+	background(230, 200, 230);
+	fill(255);
+	textFont('Courier New');
+	textSize(80);
+	text('T-Rex Plays Badminton', 100, 100);
+	fill(255);
+	ellipse(600, 400, 100);
+	fill(100);
+	rect(400, 540, 400, 160);
+	fill(255);
+	textSize(90);
+	text('START', 460, 645);
 }
 
 function impl_line(x, y, x0, y0, x1, y1){
@@ -182,45 +182,45 @@ function impl_line(x, y, x0, y0, x1, y1){
 }
 
 function setGradient(x, y, w, h, c1, c2, axis) {
-    noFill();
-    if (axis == "Y") {  // Top to bottom gradient
-      for (let i = y; i <= y + h; i++) {
-        var inter = map(i, y, y + h, 0, 1);
-        var c = lerpColor(c1, c2, inter);
-        stroke(c);
-        line(x , i, x + w, i);
-      }
-    }
+	noFill();
+	if (axis == "Y") {  // Top to bottom gradient
+	  for (let i = y; i <= y + h; i++) {
+		var inter = map(i, y, y + h, 0, 1);
+		var c = lerpColor(c1, c2, inter);
+		stroke(c);
+		line(x , i, x + w, i);
+	  }
+	}
 }
 
 function mousePressed() {
-    if (scene1 == true) {
-        if (mouseX > 400 && mouseX < 800 && mouseY > 540 && mouseY < 700) {
-            scene2 = true;
-            scene1 = false;
-            scene3 = false;
-        } 
-    } 
-    if (scene2 == true) {
-        if (mouseX > 1050 && mouseX < 1200 && mouseY > 0 && mouseY < 50) {
-        //mouseX > 1050 && mouseX < 1200 && mouseY > 0 && mouseY < 50
-            scene3 = true;
-            scene2 = false;
-            scene1 = false;
-        }
-        if (mouseX > 0 && mouseX < 150 && mouseY > 0 && mouseY < 50) {
-            //mouseX > 1050 && mouseX < 1200 && mouseY > 0 && mouseY < 50
-                scene1 = true;
-                scene2 = false;
-                scene3 = false;
-            }
-    }    
-    if (scene3 == true) {
-        if (mouseX > 400 && mouseX < 800 && mouseY > 540 && mouseY < 700) {
-        //mouseX > 1050 && mouseX < 1200 && mouseY > 0 && mouseY < 50
-            scene1 = true;
-            scene2 = false;
-            scene3 = false;
-        }
-    }
+	if (scene1 == true) {
+		if (mouseX > 400 && mouseX < 800 && mouseY > 540 && mouseY < 700) {
+			scene2 = true;
+			scene1 = false;
+			scene3 = false;
+		} 
+	} 
+	if (scene2 == true) {
+		if (mouseX > 1050 && mouseX < 1200 && mouseY > 0 && mouseY < 50) {
+		//mouseX > 1050 && mouseX < 1200 && mouseY > 0 && mouseY < 50
+			scene3 = true;
+			scene2 = false;
+			scene1 = false;
+		}
+		if (mouseX > 0 && mouseX < 150 && mouseY > 0 && mouseY < 50) {
+			//mouseX > 1050 && mouseX < 1200 && mouseY > 0 && mouseY < 50
+				scene1 = true;
+				scene2 = false;
+				scene3 = false;
+			}
+	}	
+	if (scene3 == true) {
+		if (mouseX > 400 && mouseX < 800 && mouseY > 540 && mouseY < 700) {
+		//mouseX > 1050 && mouseX < 1200 && mouseY > 0 && mouseY < 50
+			scene1 = true;
+			scene2 = false;
+			scene3 = false;
+		}
+	}
 }
