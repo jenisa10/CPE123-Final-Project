@@ -1,5 +1,5 @@
 // declare of a variable to represent a particle system
-var fireW1; 
+var fireW1;
 var fireworks = [];
 var fcol = 1;
 var bpx;
@@ -10,12 +10,12 @@ var bpy;
 //var birdie_theta = [];
 //var birdie_thetaAdd = [];
 
-function setup() 
+function setup()
 {
 	createCanvas(500, 500);
 }
 
-function draw() 
+function draw()
 {
 	bpx = mouseX;
 	bpy = mouseY;
@@ -66,7 +66,7 @@ function Particle(x , y)
 		this.life -= 1;
 	};
 	// function to draw a particle
-	this.renderP = function() 
+	this.renderP = function()
 	{
 		noStroke();
 		push();
@@ -83,14 +83,14 @@ function PSys(sX, sY, num)
 {
 	// the data - lots of particles
 	this.particles = [];
-	for (var i=0; i < num; i++) 
+	for (var i=0; i < num; i++)
 	{
 		this.particles.push(new Particle(sX, sY));
 	}
 	// function defining what to do each frame
-	this.run = function() 
+	this.run = function()
 	{
-		for (var i=0; i < this.particles.length; i++) 
+		for (var i=0; i < this.particles.length; i++)
 		{
 			//update each particle per frame
 			this.particles[i].updateP();
