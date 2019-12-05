@@ -9,29 +9,75 @@ var grass_y=[];
 var grass_dx=[];
 var grass_dy=[];
 
+const dino_x_min = 100;
+const dino_x_max = 1100;
+const dino_y_min = 550;
+const dino_y_max = 750;
+const dino_scale = 0.5;
+const dino_rotate_beg = 2.2;
+const dino_rotate_end = -0.5;
+const dino_hit_vel = -0.3;
+const dino_return_vel = 0.45;
+
+var p1_x = 250, p1_y = 600, p1_handR = dino_rotate_beg, p1_state = 0; // state 0: idle, 1: resetting, 2: hitting
+var p2_x = 950, p2_y = 600, p2_handR = dino_rotate_beg, p2_state = 0;
+
+var birdy_x, birdy_y;
+
 function setup(){
-	createCanvas(1200, 800); 
-	scene1 = true;
-	scene2 = false;
-	scene3 = false; 
+	createCanvas(1200, 800);
+	scene1 = false;
+	scene2 = true;
+	scene3 = false;
 	grass_initialize();
 }
 
-function draw(){ 
+function draw(){
 	if (scene1 == true) {
-		title(); 
+		title();
 	}
 	if (scene2 == true) {
-		back(); 
+		back();
 		drawMounts(250, 50, 120, 220, 0.005);
 		board();
 		timer();
-		grass();
-		court();		
-	} 
+		//grass();
+		court();
+		updatePlayers();
+		drawPlayers();
+	}
 	if (scene3 == true){
 		endPage();
 	}
+}
+
+function updatePlayers() {
+	if(keyIsDown(UP_ARROW)){
+		p1_y-=7;
+	}
+	if (keyIsDown(DOWN_ARROW)){
+		p1_y+=7;
+	}
+	if (keyIsDown(LEFT_ARROW)){
+		p1_x-=7;
+	}
+	if (keyIsDown(RIGHT_ARROW)){
+		p1_x+=7;
+	}
+	p1_handR += p1_state > 0 ? (p1_state == 2 ? dino_hit_vel : dino_return_vel) : 0;
+	if (keyIsDown(190)){
+		p1_state = 2;
+	}
+	if (p1_state == 2 && p1_handR <= dino_rotate_end) {
+		p1_state = 1;
+	} else if (p1_state == 1 && p1_handR >= dino_rotate_beg) {
+		p1_state = 0;
+	}
+}
+
+function drawPlayers() {
+	draw_dinosaur(p1_x, p1_y, dino_scale, p1_handR, 1);
+	draw_dinosaur(p2_x, p2_y, dino_scale, p2_handR, 2);
 }
 
 function back(){
@@ -40,7 +86,7 @@ function back(){
 	var color1 = color(0, 140, 200);
 	var color2 = color(255, 165, 200);
 	setGradient(0, 0, width, 500, color1, color2, "Y");
-  
+
 	noStroke();
 	fill(100);
 	rect(1050, 0, 150, 50);
@@ -57,7 +103,7 @@ function court(){
 		strokeWeight(8);
 		stroke(255);
 		fill(255, 182, 180);
-		quad(50, 700, 100, 500, 1100, 500, 1150, 700); 
+		quad(50, 700, 100, 500, 1100, 500, 1150, 700);
 		stroke(255);
 		strokeWeight(5);
 		line(70, 700, 120, 500);
@@ -199,8 +245,8 @@ function mousePressed() {
 			scene2 = true;
 			scene1 = false;
 			scene3 = false;
-		} 
-	} 
+		}
+	}
 	if (scene2 == true) {
 		if (mouseX > 1050 && mouseX < 1200 && mouseY > 0 && mouseY < 50) {
 		//mouseX > 1050 && mouseX < 1200 && mouseY > 0 && mouseY < 50
@@ -224,3 +270,165 @@ function mousePressed() {
 		}
 	}
 }
+
+function draw_dinosaur(x, y, sc, handR, player) {
+	x_multi = player == 1 ? -1 : 1;
+	push();
+		translate(x, y);
+		scale(sc);
+		strokeWeight(3);
+		stroke(0, 128, 4);
+
+		//other leg
+		push();
+		fill(0, 64, 2);
+		strokeWeight(5);
+		stroke(0, 64, 2);
+		triangle(x_multi * 0, 97, x_multi * -15, 125, x_multi * -30, 95);
+		pop();
+
+		//body
+		fill(0, 128, 4);
+		beginShape();
+			//back
+			vertex(x_multi * -19, -65);
+			vertex(x_multi * -19, -96);
+			curveVertex(x_multi * 0, -96);
+			curveVertex(x_multi * 15, -90);
+			curveVertex(x_multi * 25, -70);
+			curveVertex(x_multi * 30, -50);
+			curveVertex(x_multi * 35, -30);
+			curveVertex(x_multi * 40, -10);
+			curveVertex(x_multi * 43, 0);
+			curveVertex(x_multi * 47, 20);
+			curveVertex(x_multi * 51, 40);
+	
+			//tail
+			curveVertex(x_multi * 55, 48);
+			curveVertex(x_multi * 63, 53);
+			curveVertex(x_multi * 77, 54);
+			curveVertex(x_multi * 90, 48);
+			curveVertex(x_multi * 100, 40);
+			curveVertex(x_multi * 110, 38);
+			curveVertex(x_multi * 120, 42);
+			curveVertex(x_multi * 119, 50);
+			curveVertex(x_multi * 110, 60);
+			curveVertex(x_multi * 100, 69);
+			curveVertex(x_multi * 90, 77);
+			curveVertex(x_multi * 80, 85);
+			curveVertex(x_multi * 70, 90);
+			vertex(x_multi * 70, 90);
+	
+			//leg
+			vertex(x_multi * 50, 94);
+			vertex(x_multi * 38, 95);
+			vertex(x_multi * 33, 106);
+			vertex(x_multi * 30, 115);
+			vertex(x_multi * 25, 125);
+			//vertex(x_multi * 25, 126);
+			vertex(x_multi * 15, 115);
+			vertex(x_multi * 10, 106);
+			vertex(x_multi * 0, 97);
+	
+			//stomach
+			curveVertex(x_multi * -25, 95);
+			curveVertex(x_multi * -40, 85);
+			curveVertex(x_multi * -47, 60);
+			curveVertex(x_multi * -47, 40);
+			curveVertex(x_multi * -43, 10);
+			curveVertex(x_multi * -35, -10);
+			curveVertex(x_multi * -28, -20);
+			curveVertex(x_multi * -19, -37);
+			vertex(x_multi * -19, -37);
+			vertex(x_multi * -19, -65);
+			vertex(x_multi * -19, -96);
+		endShape(CLOSE);
+
+		//face
+		push();
+			translate(x_multi * -25, -75);
+			arc(x_multi * 6, 8, x_multi * 70, 60, radians(90), radians(270));//face
+			
+		//eyes -- possibly make them move with mouse
+			fill(0);
+			ellipse(x_multi * -17, -7, 25);
+			ellipse(x_multi * 10, -7, 25);
+
+			fill(255);
+			noStroke();
+			ellipse(x_multi * -17, -7, 15);
+			ellipse(x_multi * 10, -7, 15);
+
+			fill(0);
+			ellipse(x_multi * -17, -5, 8);
+			ellipse(x_multi * 10, -5, 8);
+		pop();
+
+		//hands
+		fill(0, 190, 4);
+		strokeWeight(1);
+		stroke(0);
+		//hand that won't move
+		push();
+			translate(x_multi * -40, 0);
+			rotate(x_multi * PI/7);
+			beginShape();
+			vertex(x_multi * 0, 0);
+			vertex(x_multi * -18, 15);
+			vertex(x_multi * 2, 15);
+			endShape();
+		pop();
+		//hand that moves
+		push();
+			translate(x_multi * 17, 0);
+			rotate(x_multi * handR);
+
+			push();
+				//racket
+				translate(x_multi * -30, 15);
+				rotate(x_multi * 2*PI/3)
+				scale(sc*3);
+				fill(0);
+				rect(player == 1 ? -2 : -3, -14, 6, 30);
+				rect(0, 15, 1, 80);
+				fill(0,0,0,0);
+				stroke(32);
+				push();
+					scale(2);
+					translate(0, -40)
+					ellipse(x_multi * 0, 105, x_multi * 45, 80);
+
+					line(x_multi * 5   , 142 , x_multi * 5   , 67);
+					line(x_multi * -5  , 142 , x_multi * -5  , 67);
+					line(x_multi * -15 , 135 , x_multi * -15 , 75);
+					line(x_multi * 15  , 135 , x_multi * 15  , 75);
+
+					line(x_multi * 0   , 145 , x_multi * 0   , 65);
+					line(x_multi * -10 , 140 , x_multi * -10 , 70);
+					line(x_multi * -20 , 125 , x_multi * -20 , 85);
+					line(x_multi * 10  , 140 , x_multi * 10  , 70);
+					line(x_multi * 20  , 120 , x_multi * 20  , 89);
+					line(x_multi * -22 , 105 , x_multi * 22  , 105);
+					line(x_multi * -22 , 95  , x_multi * 21  , 95);
+					line(x_multi * -20 , 85  , x_multi * 20  , 85);
+					line(x_multi * -15 , 75  , x_multi * 15  , 75);
+					line(x_multi * -22 , 115 , x_multi * 20  , 115);
+					line(x_multi * -20 , 125 , x_multi * 19  , 125);
+					line(x_multi * -15 , 135 , x_multi * 14  , 135);
+				pop();
+			pop();
+
+			beginShape();
+			vertex(x_multi * 0, 0);
+			vertex(x_multi * -24, 15);
+			vertex(x_multi * -2, 15);
+			endShape();
+		pop();
+
+	pop();
+}
+function racket() {
+	translate(x+17, y)
+	fill(255);
+	ellipse(0, 0, 20);
+ }

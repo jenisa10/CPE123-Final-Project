@@ -2,21 +2,18 @@ var handR;
 var locx=300;
 var locy=300;
 
-function setup()
-{
+function setup() {
 	createCanvas(400, 400);
 	handR = PI/20;
 }
 
-function draw()
-{
+function draw() {
 	background(255);
 	draw_dinosaur(locx, locy, 1);
 	dinoMovement();
 }
 
-function draw_dinosaur(x, y, sc)
-{
+function draw_dinosaur(x, y, sc) {
 	push();
 		translate(x, y);
 		scale(sc);
@@ -162,8 +159,7 @@ function draw_dinosaur(x, y, sc)
 	pop();
 }
 
-function dinoMovement()
-{
+function dinoMovement() {
 	//dino moves up
 		if(keyIsDown(UP_ARROW)){
 			locy-=10;
