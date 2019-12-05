@@ -5,7 +5,6 @@ var locy=300;
 function setup()
 {
 	createCanvas(400, 400);
-
 	handR = PI/20;
 }
 
