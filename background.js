@@ -22,7 +22,7 @@ const dino_return_vel = 0.45;
 var p1_x = 250, p1_y = 600, p1_handR = dino_rotate_beg, p1_state = 0; // state 0: idle, 1: resetting, 2: hitting
 var p2_x = 950, p2_y = 600, p2_handR = dino_rotate_beg, p2_state = 0;
 
-var birdy_x, birdy_y;
+var birdie_x, birdie_y;
 
 function setup(){
 	createCanvas(1200, 800);
