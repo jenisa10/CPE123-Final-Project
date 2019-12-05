@@ -14,15 +14,22 @@ const dino_x_max = 1100;
 const dino_y_min = 550;
 const dino_y_max = 750;
 const dino_scale = 0.5;
-const dino_rotate_beg = 2.2;
-const dino_rotate_end = -0.5;
-const dino_hit_vel = -0.3;
-const dino_return_vel = 0.45;
+const dino_rotate_beg = 2.3;
+const dino_rotate_end = 1.1;
+const dino_hit_vel = -0.2;
+const dino_return_vel = 0.07;
+const dino_dx_speed = 10;
+const dino_dy_speed = 8;
 
 var p1_x = 250, p1_y = 600, p1_handR = dino_rotate_beg, p1_state = 0; // state 0: idle, 1: resetting, 2: swinging
 var p2_x = 950, p2_y = 600, p2_handR = dino_rotate_beg, p2_state = 0;
 
 var birdie_x, birdie_y;
+var birdie_dx, birdie_dy;
+const birdie_scale = 0.7;
+const gravity = 0.8;
+
+var newGame = true;
 
 // declare of a variable to represent a particle system
 var fireW1;
@@ -153,6 +160,15 @@ function birdie_lines(rot){
 
 function setup(){
 	createCanvas(1200, 800);
+	//birdie_x = 950;
+	//birdie_y = 200;
+	//birdie_dx = -180;
+	//birdie_dy = 5;
+	//
+	birdie_x = 0;
+	birdie_y = 0;
+	birdie_dx = 80;
+	birdie_dy = 0;
 	scene1 = false;
 	scene2 = true;
 	scene3 = false;
@@ -160,14 +176,13 @@ function setup(){
 }
 
 function draw(){
-	bpx = mouseX;
-	bpy = mouseY;
-	background(150);
-	for(i=0;i<fireworks.length;i++){
-		fireworks[i].run()
-	}
+	//bpx = mouseX;
+	//bpy = mouseY;
+	//background(150);
+	//for(i=0;i<fireworks.length;i++){
+		//fireworks[i].run()
+	//}
 
-	birdie(width/2, height/2, 4, 3, 1)
 	if (scene1 == true) {
 		title();
 	}
@@ -178,6 +193,8 @@ function draw(){
 		timer();
 		//grass();
 		court();
+		updateBirdie();
+		birdie(birdie_x, birdie_y, birdie_dx, birdie_dy, birdie_scale);
 		updatePlayers();
 		drawPlayers();
 	}
@@ -186,28 +203,172 @@ function draw(){
 	}
 }
 
+const dtheta=-0.5;
+const r1=60;
+const r2=165;
+const strength = 40;
+const bounce = 20;
+var p1_theta, p2_theta;
+var birdie_theta = 0;
+var birdie_drag_x = 0, birdie_drag_y = 0, birdie_speed = 0;
+const air_drag = 0.002;
+var p1_hit = false, p2_hit = false;
+const collider_len = 50;
+function updateBirdie() {
+	if (isNaN(birdie_x)) {
+		birdie_dx = 0;
+		console.log(birdie_dx);
+		console.log(isNaN(birdie_dx));
+		console.log(isNaN(birdie_x));
+		console.log(isNaN(birdie_theta));
+		console.log(isNaN(birdie_dx));
+		console.log(isNaN(birdie_dx));
+	}
+	birdie_x += birdie_dx;
+	birdie_y += birdie_dy;
+	if (birdie_y < 10 && birdie_dy < 0) {
+		birdie_dy = 0;
+	}
+	if (birdie_x < 10) {
+		birdie_x = 10;
+	}
+	if (birdie_x > width - 10) {
+		birdie_x = width - 10;
+	}
+	birdie_drag_x = air_drag * birdie_dx * birdie_dx;
+	birdie_drag_y = air_drag * birdie_dy * birdie_dy;
+	birdie_theta = atan(birdie_dy/birdie_dx);
+	birdie_dx -= (birdie_dx / abs(birdie_dx)) * birdie_drag_x;
+	birdie_dy += gravity;
+	if (birdie_drag_y < gravity) {
+		birdie_dy -= (birdie_dy / abs(birdie_dy)) * birdie_drag_y;
+	}
+	p1_theta = 2*PI-p1_handR+dtheta
+	p2_theta = p2_handR-dtheta
+	if (!p1_hit && intersects(
+		p1_x+r1*cos(p1_theta),
+		p1_y+r1*sin(p1_theta),
+		p1_x+r2*cos(p1_theta),
+		p1_y+r2*sin(p1_theta),
+		birdie_x-cos(birdie_theta)*collider_len,
+		birdie_y-sin(birdie_theta)*collider_len,
+		birdie_x+cos(birdie_theta)*collider_len,
+		birdie_y+sin(birdie_theta)*collider_len)) {
+		birdie_dx = (p1_state == 2 ? strength : bounce) * cos(p1_theta + PI/2);
+		birdie_dy = (p1_state == 2 ? strength : bounce) * sin(p1_theta + PI/2);
+		p1_hit = true;
+		if (isNaN(birdie_dx)) {
+			birdie_dx = strength;
+		}
+		if (isNaN(birdie_dy)) {
+			birdie_dy = 0
+		}
+	}
+	if (!p2_hit && intersects(
+		p2_x-r1*cos(p2_theta),
+		p2_y-r1*sin(p2_theta),
+		p2_x-r2*cos(p2_theta),
+		p2_y-r2*sin(p2_theta),
+		birdie_x-cos(birdie_theta)*collider_len,
+		birdie_y-sin(birdie_theta)*collider_len,
+		birdie_x+cos(birdie_theta)*collider_len,
+		birdie_y+sin(birdie_theta)*collider_len)) {
+		birdie_dx = (p2_state == 2 ? strength : bounce) * cos(p2_theta + PI/2);
+		birdie_dy = (p2_state == 2 ? strength : bounce) * sin(p2_theta + PI/2);
+		if (isNaN(birdie_dx)) {
+			birdie_dx = strength;
+		}
+		if (isNaN(birdie_dy)) {
+			birdie_dy = 0
+		}
+		p2_hit = true;
+	}
+}
+
+// https://stackoverflow.com/a/24392281/4600414
+function intersects(a,b,c,d,p,q,r,s) {
+  var det, gamma, lambda;
+  det = (c - a) * (s - q) - (r - p) * (d - b);
+  if (det === 0) {
+    return false;
+  } else {
+    lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
+    gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
+    return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
+  }
+}
+
 function updatePlayers() {
+	if(keyIsDown(87)){
+		p1_y-=dino_dy_speed;
+	}
+	if (keyIsDown(82)){
+		p1_y+=dino_dy_speed;
+	}
+	if (keyIsDown(65)){
+		p1_x-=dino_dx_speed;
+	}
+	if (keyIsDown(83)){
+		p1_x+=dino_dx_speed;
+	}
 	if(keyIsDown(UP_ARROW)){
-		p1_y-=7;
+		p2_y-=dino_dy_speed;
 	}
 	if (keyIsDown(DOWN_ARROW)){
-		p1_y+=7;
+		p2_y+=dino_dy_speed;
 	}
 	if (keyIsDown(LEFT_ARROW)){
-		p1_x-=7;
+		p2_x-=dino_dx_speed;
 	}
 	if (keyIsDown(RIGHT_ARROW)){
-		p1_x+=7;
+		p2_x+=dino_dx_speed;
 	}
 	p1_handR += p1_state > 0 ? (p1_state == 2 ? dino_hit_vel : dino_return_vel) : 0;
-	if (keyIsDown(190)){
+	p2_handR += p2_state > 0 ? (p2_state == 2 ? dino_hit_vel : dino_return_vel) : 0;
+	if (p1_handR > dino_rotate_beg) {
+		p1_handR = dino_rotate_beg;
+	}
+	if (p2_handR > dino_rotate_beg) {
+		p2_handR = dino_rotate_beg;
+	}
+	if (keyIsDown(32)){
 		p1_state = 2;
+		p1_hit = false;
 	}
 	if (p1_state == 2 && p1_handR <= dino_rotate_end) {
 		p1_state = 1;
 	} else if (p1_state == 1 && p1_handR >= dino_rotate_beg) {
 		p1_state = 0;
 	}
+	if (keyIsDown(16)){
+		p2_state = 2;
+		p2_hit = false;
+	}
+	if (p2_state == 2 && p2_handR <= dino_rotate_end) {
+		p2_state = 1;
+	} else if (p2_state == 1 && p2_handR >= dino_rotate_beg) {
+		p2_state = 0;
+	}
+	push();
+	stroke(155, 0, 0);
+	strokeWeight(10);
+	line(
+		p1_x+r1*cos(2*PI-p1_handR+dtheta),
+		p1_y+r1*sin(2*PI-p1_handR+dtheta),
+		p1_x+r2*cos(2*PI-p1_handR+dtheta),
+		p1_y+r2*sin(2*PI-p1_handR+dtheta));
+	line(
+		p2_x-r1*cos(p2_handR-dtheta),
+		p2_y-r1*sin(p2_handR-dtheta),
+		p2_x-r2*cos(p2_handR-dtheta),
+		p2_y-r2*sin(p2_handR-dtheta));
+	line(
+		birdie_x,
+		birdie_y,
+		birdie_x+birdie_dx,
+		birdie_y+birdie_dy,
+	)
+	pop();
 }
 
 function drawPlayers() {
@@ -275,7 +436,7 @@ function board(){
 	fill(255);
 	noStroke();
 	textSize(36);
-	textFont('Courier New');
+	//textFont('Courier New');
 	text('TIME', 400, 270);
 	text('Player 1', 380, 90);
 	text('Player 2', 640, 90);
@@ -301,8 +462,9 @@ function grass(){
 }
 
 function grass_initialize(){
-	for (var y=0; y < height; y+= 5){
-		for (var x=0; x < width; x+=5){
+	var x, y;
+	for (y=0; y < height; y+= 5){
+		for (x=0; x < width; x+=5){
 			if  (impl_line(x, y, 0, 470, 1200, 470) > 0){
 				grass_g.push(random(180,240));
 				grass_b.push(random(150,180));
