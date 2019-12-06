@@ -51,7 +51,7 @@ var bpy;
 function birdie_particle(x , y) {
 	this.accelY = 0.01; //gravity
 	this.velX = random(.5, 1.3);
-	this.velY = random(-.5, .5);
+	this.velY = random(-1.15, 1.15);
 
 	
 	this.pcolorR=255
