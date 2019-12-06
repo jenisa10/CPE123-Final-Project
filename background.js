@@ -299,7 +299,8 @@ function updateBirdie() {
 	}
 	p1_theta = 2*PI-p1_handR+dtheta
 	p2_theta = p2_handR-dtheta
-	//if (!dead) {
+	if (dead) {
+	} else {
 	if (!p1_hit && intersects(
 		p1_x+r1*cos(p1_theta),
 		p1_y+r1*sin(p1_theta),
@@ -340,10 +341,25 @@ function updateBirdie() {
 		p2_hit = true;
 		birdie_hit();
 	}
-	//}
+	}
 	if (birdie_y > 700) {
 		if (!dead) {
+			if (birdie_x < width/2) {
+				p1_score++;
+			} else {
+				p2_score++;
+			}
 			dead = true;
+		}
+		if (birdie_dy > 0) {
+			if (birdie_dy < 10) {
+				birdie_dy = 0;
+				birdie_dx *= 0.8;
+			}
+			if (birdie_dx > -1 && birdie_dx < 1) {
+				initGame();
+			}
+			birdie_dy = -0.6 * birdie_dy;
 		}
 	}
 }
@@ -501,13 +517,17 @@ function board(){
 	textSize(36);
 	//textFont('Courier New');
 	text('TIME', 400, 270);
-	text('Player 1', 380, 90);
-	text('Player 2', 640, 90);
+	text('Player 1', 410, 90);
+	text('Player 2', 660, 90);
 	//time
 	if(time <= 60){
 		fill(255);
 		text(time, width/2, 270);
 	}
+	textSize(72);
+	text(p1_score, 460, 200);
+	text(':', 590, 200);
+	text(p2_score, 700, 200);
 }
 
 function timer(){
