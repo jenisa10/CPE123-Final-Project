@@ -228,13 +228,9 @@ function setup(){
 }
 
 function draw(){
-	birdie_hit();
 	//bpx = mouseX;
 	//bpy = mouseY;
 	//background(150);
-	for(i=0;i<birdie_sparks.length;i++){
-		birdie_sparks[i].run()
-	}
 	for(i=0;i<end_fireworks.length;i++){
 		end_fireworks[i].run()
 		}
@@ -253,6 +249,9 @@ function draw(){
 		birdie(birdie_x, birdie_y, birdie_dx, birdie_dy, birdie_scale);
 		updatePlayers();
 		drawPlayers();
+		for(i=0;i<birdie_sparks.length;i++){
+			birdie_sparks[i].run()
+		}
 	}
 	if (scene3 == true){
 		endPage();
