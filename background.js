@@ -10,10 +10,10 @@ var grass_dx=[];
 var grass_dy=[];
 
 const dino1_x_min = 0;
-const dino1_x_max = 600;
+const dino1_x_max = 575;
 const dino1_y_min = 800;
 const dino1_y_max = 250;
-const dino2_x_min = 600;
+const dino2_x_min = 625;
 const dino2_x_max = 1100;
 const dino2_y_min = 800;
 const dino2_y_max = 250;
@@ -436,6 +436,9 @@ function updatePlayers() {
 		p2_state = 1;
 	} else if (p2_state == 1 && p2_handR >= dino_rotate_beg) {
 		p2_state = 0;
+	}
+	if (p1_x>dino1_x_max){
+		p1_x=dino1_x_max;
 	}
 	//push();
 	//stroke(155, 0, 0);
