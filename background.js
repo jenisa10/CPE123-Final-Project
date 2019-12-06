@@ -129,30 +129,30 @@ function birdie_hit(){
 var end_fireworks = [];
 function end_Particle(x , y) 
 {
-    this.accelY = 0.05; //gravity
-    this.velX = random(-1, 1);
-    this.velY = random(.5, 1.3);
+	this.accelY = 0.05; //gravity
+	this.velX = random(-1, 1);
+	this.velY = random(.5, 1.3);
 
-   if(fcol % 3 < 1){
-      this.pcolorR=255
-      this.pcolorG=166+random(-50,50)
-      this.pcolorB=247+random(-50,50)
-   }
-   else if(fcol % 3 < 2){
-      this.pcolorR=145+random(-50,50)
-      this.pcolorG=255
-      this.pcolorB=176+random(-50,50)
-   }
-   else if(fcol % 3 < 3){
-      this.pcolorR=145+random(-50,50)
-      this.pcolorG=255+random(-50,50)
-      this.pcolorB=255
-   }
-   this.locX = x;
-   this.locY = y;
-   this.r = 5.0;
-   this.life = 255;
-  
+	if(fcol % 3 < 1){
+		this.pcolorR=255
+		this.pcolorG=166+random(-50,50)
+		this.pcolorB=247+random(-50,50)
+	}
+	else if(fcol % 3 < 2){
+		this.pcolorR=145+random(-50,50)
+		this.pcolorG=255
+		this.pcolorB=176+random(-50,50)
+	}
+	else if(fcol % 3 < 3){
+		this.pcolorR=145+random(-50,50)
+		this.pcolorG=255+random(-50,50)
+		this.pcolorB=255
+	}
+	this.locX = x;
+	this.locY = y;
+	this.r = 5.0;
+	this.life = 255;
+
 	this.updateP = function()
 	{
 		this.velY += this.accelY;
@@ -160,7 +160,7 @@ function end_Particle(x , y)
 		this.locY += this.velY;
 		this.life -= 2.5;
 	};
-  
+
 	this.renderP = function() 
 	{
 		noStroke();
@@ -179,7 +179,7 @@ function end_PSys(sX, sY, num)
 	{
 		this.particles.push(new end_Particle(sX, sY));
 	}
-  
+
 	this.run = function() 
 	{
 		for (var i=0; i < this.particles.length; i++) 
@@ -440,15 +440,15 @@ function updateBirdie() {
 
 // https://stackoverflow.com/a/24392281/4600414
 function intersects(a,b,c,d,p,q,r,s) {
-  var det, gamma, lambda;
-  det = (c - a) * (s - q) - (r - p) * (d - b);
-  if (det === 0) {
+	var det, gamma, lambda;
+	det = (c - a) * (s - q) - (r - p) * (d - b);
+	if (det === 0) {
 	 return false;
-  } else {
+	} else {
 	 lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
 	 gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
 	 return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
-  }
+	}
 }
 
 function updatePlayers() {
@@ -662,7 +662,7 @@ function grass_initialize(){
 	var x, y;
 	for (y=0; y < height; y+= 5){
 		for (x=0; x < width; x+=5){
-			if  (impl_line(x, y, 0, 470, 1200, 470) > 0){
+			if (impl_line(x, y, 0, 470, 1200, 470) > 0){
 				grass_g.push(random(180,240));
 				grass_b.push(random(150,180));
 				grass_dx.push(random(-2,2));
@@ -676,9 +676,9 @@ function grass_initialize(){
 
 function drawMounts(peak, range, color, scale, noiseScale) {
 	for (var x=0; x < width; x++) {
-	  var noiseVal = noise((500+x)*noiseScale, 500*noiseScale);
-	  stroke(color, range);
-	  line(x, (peak) + noiseVal*scale, x, height);
+		var noiseVal = noise((500+x)*noiseScale, 500*noiseScale);
+		stroke(color, range);
+		line(x, (peak) + noiseVal*scale, x, height);
 	}
 }
 
@@ -723,13 +723,13 @@ function impl_line(x, y, x0, y0, x1, y1){
 
 function setGradient(x, y, w, h, c1, c2, axis) {
 	noFill();
-	if (axis == "Y") {  // Top to bottom gradient
-	  for (let i = y; i <= y + h; i++) {
+	if (axis == "Y") { // Top to bottom gradient
+		for (let i = y; i <= y + h; i++) {
 		var inter = map(i, y, y + h, 0, 1);
 		var c = lerpColor(c1, c2, inter);
 		stroke(c);
 		line(x , i, x + w, i);
-	  }
+		}
 	}
 }
 
@@ -930,7 +930,7 @@ function racket() {
 
 
 function dino1Jump() {
-	//decide which way to jump  depending if it is true or false
+	//decide which way to jump depending if it is true or false
 	if (p1_y > 605) {
 		dy_p1 = -dy_p1
 		jump_count++;
@@ -945,7 +945,7 @@ function dino1Jump() {
 
 function dino2Jump()
 {
-	//decide which way to jump  depending if it is true or false
+	//decide which way to jump depending if it is true or false
 	if (p2_y > 605)
 	{
 		dy_p2 = -dy_p2;
