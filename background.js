@@ -299,7 +299,8 @@ function updateBirdie() {
 	}
 	p1_theta = 2*PI-p1_handR+dtheta
 	p2_theta = p2_handR-dtheta
-	//if (!dead) {
+	if (dead) {
+	} else {
 	if (!p1_hit && intersects(
 		p1_x+r1*cos(p1_theta),
 		p1_y+r1*sin(p1_theta),
@@ -340,10 +341,17 @@ function updateBirdie() {
 		p2_hit = true;
 		birdie_hit();
 	}
-	//}
+	}
 	if (birdie_y > 700) {
 		if (!dead) {
 			dead = true;
+		}
+		if (birdie_dy > 0) {
+			if (birdie_dy < 10) {
+				birdie_dy = 0;
+				birdie_dx *= 0.8;
+			}
+			birdie_dy = -0.6 * birdie_dy;
 		}
 	}
 }
