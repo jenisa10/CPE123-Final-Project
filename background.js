@@ -117,8 +117,8 @@ function PSys(sX, sY, num)
 }
 
 
-function hit(){
-	fireworks.push(new PSys(bpx, bpy, random(15, 25)));
+function birdie_hit(){
+	fireworks.push(new PSys(birdie_x, birdie_y, random(15, 25)));
 }
 
 function endFireworks(){
