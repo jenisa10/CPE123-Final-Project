@@ -73,7 +73,7 @@ function birdie_particle(x , y)
 	}
 	this.locX = x;
 	this.locY = y;
-	this.r = 8.0;
+	this.r = 28.0;
 	this.life = 80;
 	// a function to update the particle each frame
 	this.updateP = function()
