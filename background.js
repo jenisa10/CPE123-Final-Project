@@ -9,10 +9,14 @@ var grass_y=[];
 var grass_dx=[];
 var grass_dy=[];
 
-const dino_x_min = 100;
-const dino_x_max = 1100;
-const dino_y_min = 550;
-const dino_y_max = 750;
+const dino1_x_min = 0;
+const dino1_x_max = 600;
+const dino1_y_min = 800;
+const dino1_y_max = 250;
+const dino2_x_min = 600;
+const dino2_x_max = 1100;
+const dino2_y_min = 800;
+const dino2_y_max = 250;
 const dino_scale = 0.5;
 const dino_rotate_beg = 2.3;
 const dino_rotate_end = 1.1;
@@ -52,7 +56,7 @@ var bpy;
 function birdie_particle(x , y) {
 	this.accelY = 0.01; //gravity
 	this.velX = random(.5, 1.3);
-	this.velY = random(-.5, .5);
+	this.velY = random(-1.15, 1.15);
 
 	
 	this.pcolorR=255
@@ -91,6 +95,11 @@ function birdie_PSys(sX, sY, num) {
 	}
 	// function defining what to do each frame
 	this.run = function() {
+		if(this.particles.length>0){
+			if(this.particles[0].life<=0){
+				this.particles.splice(0,1);
+			}
+		}
 		for (var i=0; i < this.particles.length; i++) {
 			//update each particle per frame
 			this.particles[i].updateP();
@@ -356,7 +365,7 @@ function updateBirdie() {
 						p1_score++;
 					}
 				} else {
-					p1_score++;
+					p2_score++;
 				}
 			} else {
 				if (birdie_x > 1137) { // out of bound
@@ -366,7 +375,7 @@ function updateBirdie() {
 						p1_score++;
 					}
 				} else {
-					p2_score++;
+					p1_score++;
 				}
 			}
 			dead = true;
