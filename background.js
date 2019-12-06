@@ -36,7 +36,8 @@ var newGame = true;
 
 // declare of a variable to represent a particle system
 var fireW1;
-var fireworks = [];
+var birdie_sparks = [];
+var end_fireworks = [];
 var fcol = 1;
 var bpx;
 var bpy;
@@ -47,7 +48,7 @@ var bpy;
 //var birdie_thetaAdd = [];
 
 //definition of a particle
-function Particle(x , y)
+function birdie_particle(x , y)
 {
 	this.accelY = 0.01; //gravity
 	this.velX = random(.5, 1.3);
@@ -75,7 +76,7 @@ function Particle(x , y)
 	}
 	this.locX = x;
 	this.locY = y;
-	this.r = 8.0;
+	this.r = 28.0;
 	this.life = 80;
 	// a function to update the particle each frame
 	this.updateP = function()
@@ -99,13 +100,13 @@ function Particle(x , y)
 
 
 // define a group of particles as a particleSys
-function PSys(sX, sY, num)
+function birdie_PSys(sX, sY, num)
 {
 	// the data - lots of particles
 	this.particles = [];
 	for (var i=0; i < num; i++)
 	{
-		this.particles.push(new Particle(sX, sY));
+		this.particles.push(new birdie_particle(sX, sY));
 	}
 	// function defining what to do each frame
 	this.run = function()
@@ -120,18 +121,81 @@ function PSys(sX, sY, num)
 }
 
 
-function hit(){
-	fireworks.push(new PSys(bpx, bpy, random(15, 25)));
+function birdie_hit(){
+	birdie_sparks.push(new birdie_PSys(birdie_x, birdie_y, random(15, 25)));
 }
 
-function endFireworks(){
+//for the fireworks @ end screen
+// end firework vars
+var end_fireworks = [];
+var col = 1;
+function end_Particle(x , y) 
+{
+   this.accelY = 0.05; //gravity
+   this.velX = random(-1, 1);
+   this.velY = random(.5, 1.3);
+
+   if(col % 3 < 1){
+      this.pcolorR=255
+      this.pcolorG=166+random(-50,50)
+      this.pcolorB=247+random(-50,50)
+   }
+   else if(col % 3 < 2){
+      this.pcolorR=145+random(-50,50)
+      this.pcolorG=255
+      this.pcolorB=176+random(-50,50)
+   }
+   else if(col % 3 < 3){
+      this.pcolorR=145+random(-50,50)
+      this.pcolorG=255+random(-50,50)
+      this.pcolorB=255
+   }
+   this.locX = x;
+   this.locY = y;
+   this.r = 8.0;
+   this.life = 255;
+  
+   this.updateP = function()
+   {
+      this.velY += this.accelY;
+      this.locX += this.velX;
+      this.locY += this.velY;
+      this.life -= 2.5;
+   };
+  
+   this.renderP = function() 
+   {
+      noStroke();
+      push();
+         fill(this.pcolorR, this.pcolorG, this.pcolorB, this.life);
+         translate(this.locX, this.locY);
+         ellipse(0, 0, this.r, this.r);
+      pop();
+   };
+} //end of particle object definition
+
+function end_PSys(sX, sY, num)
+{
+   this.particles = [];
+   for (var i=0; i < num; i++) 
+   {
+      this.particles.push(new end_Particle(sX, sY));
+   }
+  
+   this.run = function() 
+   {
+      for (var i=0; i < this.particles.length; i++) 
+      {
+         //update each particle per frame
+         this.particles[i].updateP();
+         this.particles[i].renderP();
+      }
+   }
+}
+
+function endFireworkStart(){
 	fcol++
-	fireworks.push(new PSys(random(width), random(height), random(25, 30)));
-}
-
-function mouseClicked(){
-	hit();
-	//winScreen();
+	end_fireworks.push(new PSys(random(width), random(height), random(25, 30)));
 }
 
 function birdie(px, py, dx, dy, s){
@@ -189,9 +253,12 @@ function draw(){
 	//bpx = mouseX;
 	//bpy = mouseY;
 	//background(150);
-	//for(i=0;i<fireworks.length;i++){
-		//fireworks[i].run()
-	//}
+	for(i=0;i<birdie_sparks.length;i++){
+		birdie_sparks[i].run()
+	}
+	for(i=0;i<end_fireworks.length;i++){
+      end_fireworks[i].run()
+   	}
 
 	if (scene1 == true) {
 		title();
@@ -268,6 +335,7 @@ function updateBirdie() {
 		birdie_dx = (p1_state == 2 ? strength : bounce) * cos(p1_theta + PI/2);
 		birdie_dy = (p1_state == 2 ? strength : bounce) * sin(p1_theta + PI/2);
 		p1_hit = true;
+		birdie_hit();
 		if (isNaN(birdie_dx)) {
 			birdie_dx = strength;
 		}
@@ -293,6 +361,7 @@ function updateBirdie() {
 			birdie_dy = 0
 		}
 		p2_hit = true;
+		birdie_hit();
 	}
 	//}
 	if (birdie_y > 700) {
