@@ -345,9 +345,9 @@ function updateBirdie() {
 	if (birdie_y > 700) {
 		if (!dead) {
 			if (birdie_x < width/2) {
-				p1_score++;
-			} else {
 				p2_score++;
+			} else {
+				p1_score++;
 			}
 			dead = true;
 		}
