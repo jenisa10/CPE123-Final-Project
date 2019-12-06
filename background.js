@@ -33,7 +33,7 @@ var newGame = true;
 
 // declare of a variable to represent a particle system
 var fireW1;
-var birdie_sparks
+var birdie_sparks = [];
 var end_fireworks = [];
 var fcol = 1;
 var bpx;
