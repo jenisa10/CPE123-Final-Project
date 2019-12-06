@@ -126,11 +126,6 @@ function endFireworks(){
 	fireworks.push(new PSys(random(width), random(height), random(25, 30)));
 }
 
-//function mouseClicked(){
-//	hit();
-	//winScreen();
-//}
-
 function birdie(px, py, dx, dy, s){
 	push();
 		translate(px, py);
@@ -257,7 +252,7 @@ function updateBirdie() {
 		birdie_dx = (p1_state == 2 ? strength : bounce) * cos(p1_theta + PI/2);
 		birdie_dy = (p1_state == 2 ? strength : bounce) * sin(p1_theta + PI/2);
 		p1_hit = true;
-		birdiehit();
+		birdie_hit();
 		if (isNaN(birdie_dx)) {
 			birdie_dx = strength;
 		}
