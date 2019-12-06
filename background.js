@@ -90,6 +90,11 @@ function birdie_PSys(sX, sY, num) {
 	}
 	// function defining what to do each frame
 	this.run = function() {
+		if(this.particles.length>0){
+			if(this.particles[0].life<=0){
+				this.particles.splice(0,1);
+			}
+		}
 		for (var i=0; i < this.particles.length; i++) {
 			//update each particle per frame
 			this.particles[i].updateP();
