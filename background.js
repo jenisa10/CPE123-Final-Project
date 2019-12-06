@@ -48,47 +48,44 @@ var bpy;
 //var birdie_thetaAdd = [];
 
 //definition of a particle
-function birdie_particle(x , y)
-{
+function birdie_particle(x , y) {
 	this.accelY = 0.01; //gravity
 	this.velX = random(.5, 1.3);
 	this.velY = random(-.5, .5);
 
 	if(fcol == 1){
-		this.pcolorR=255
-		this.pcolorG=243+random(-50,50)
-		this.pcolorB=95+random(-50,50)
+		this.pcolorR=255;
+		this.pcolorG=243+random(-50,50);
+		this.pcolorB=95+random(-50,50);
 	}
 	else if(fcol % 3 < 1){
-		this.pcolorR=255
-		this.pcolorG=166+random(-50,50)
-		this.pcolorB=247+random(-50,50)
+		this.pcolorR=255;
+		this.pcolorG=166+random(-50,50);
+		this.pcolorB=247+random(-50,50);
 	}
 	else if(fcol % 3 < 2){
-		this.pcolorR=145+random(-50,50)
-		this.pcolorG=255
-		this.pcolorB=176+random(-50,50)
+		this.pcolorR=145+random(-50,50);
+		this.pcolorG=255;
+		this.pcolorB=176+random(-50,50);
 	}
 	else if(fcol % 3 < 3){
-		this.pcolorR=145+random(-50,50)
-		this.pcolorG=255+random(-50,50)
-		this.pcolorB=255
+		this.pcolorR=145+random(-50,50);
+		this.pcolorG=255+random(-50,50);
+		this.pcolorB=255;
 	}
 	this.locX = x;
 	this.locY = y;
 	this.r = 28.0;
 	this.life = 80;
 	// a function to update the particle each frame
-	this.updateP = function()
-	{
+	this.updateP = function() {
 		this.velY += this.accelY;
 		this.locX += this.velX;
 		this.locY += this.velY;
 		this.life -= 1;
 	};
 	// function to draw a particle
-	this.renderP = function()
-	{
+	this.renderP = function() {
 		noStroke();
 		push();
 			fill(this.pcolorR, this.pcolorG, this.pcolorB, this.life);
@@ -100,19 +97,15 @@ function birdie_particle(x , y)
 
 
 // define a group of particles as a particleSys
-function birdie_PSys(sX, sY, num)
-{
+function birdie_PSys(sX, sY, num) {
 	// the data - lots of particles
 	this.particles = [];
-	for (var i=0; i < num; i++)
-	{
+	for (var i=0; i < num; i++) {
 		this.particles.push(new birdie_particle(sX, sY));
 	}
 	// function defining what to do each frame
-	this.run = function()
-	{
-		for (var i=0; i < this.particles.length; i++)
-		{
+	this.run = function() {
+		for (var i=0; i < this.particles.length; i++) {
 			//update each particle per frame
 			this.particles[i].updateP();
 			this.particles[i].renderP();
@@ -246,10 +239,11 @@ function setup(){
 	scene1 = false;
 	scene2 = true;
 	scene3 = false;
-	grass_initialize();
+	//grass_initialize();
 }
 
 function draw(){
+	birdie_hit();
 	//bpx = mouseX;
 	//bpy = mouseY;
 	//background(150);
