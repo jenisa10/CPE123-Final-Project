@@ -33,7 +33,7 @@ var newGame = true;
 
 // declare of a variable to represent a particle system
 var fireW1;
-var birdie_sparks = [];
+var fireworks = [];
 var fcol = 1;
 var bpx;
 var bpy;
@@ -174,7 +174,7 @@ function draw(){
 	//bpx = mouseX;
 	//bpy = mouseY;
 	//background(150);
-	for(i=0;i<birdie_sparks.length;i++){
+	for(i=0;i<fireworks.length;i++){
 		//fireworks[i].run()
 	}
 
