@@ -44,7 +44,7 @@ var bpy;
 //var birdie_thetaAdd = [];
 
 //definition of a particle
-function Particle(x , y)
+function birdie_particle(x , y)
 {
 	this.accelY = 0.01; //gravity
 	this.velX = random(.5, 1.3);
@@ -96,13 +96,13 @@ function Particle(x , y)
 
 
 // define a group of particles as a particleSys
-function PSys(sX, sY, num)
+function birdie_PSys(sX, sY, num)
 {
 	// the data - lots of particles
 	this.particles = [];
 	for (var i=0; i < num; i++)
 	{
-		this.particles.push(new Particle(sX, sY));
+		this.particles.push(new birdie_particle(sX, sY));
 	}
 	// function defining what to do each frame
 	this.run = function()
@@ -118,7 +118,7 @@ function PSys(sX, sY, num)
 
 
 function birdie_hit(){
-	fireworks.push(new PSys(birdie_x, birdie_y, random(15, 25)));
+	fireworks.push(new birdie_PSys(birdie_x, birdie_y, random(15, 25)));
 }
 
 function endFireworks(){
