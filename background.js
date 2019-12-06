@@ -24,6 +24,12 @@ const dino_dy_speed = 8;
 var p1_x = 250, p1_y = 600, p1_handR = dino_rotate_beg, p1_state = 0; // state 0: idle, 1: resetting, 2: swinging
 var p2_x = 950, p2_y = 600, p2_handR = dino_rotate_beg, p2_state = 0;
 
+var dy_p1 =1;
+var dy_p2 = 1;
+
+var p1_jumping = true;
+var p2_jumping = true;
+
 var birdie_x, birdie_y;
 var birdie_dx, birdie_dy;
 const birdie_scale = 0.7;
@@ -182,6 +188,7 @@ function draw(){
 	//for(i=0;i<fireworks.length;i++){
 		//fireworks[i].run()
 	//}
+	
 
 	if (scene1 == true) {
 		title();
@@ -349,6 +356,16 @@ function updatePlayers() {
 	} else if (p2_state == 1 && p2_handR >= dino_rotate_beg) {
 		p2_state = 0;
 	}
+
+	if (p1_jumping) 
+	{
+		dino1Jump();
+	}
+	if (p2_jumping)
+	{
+		dino2Jump();
+	}
+
 	//push();
 	//stroke(155, 0, 0);
 	//strokeWeight(10);
@@ -729,3 +746,36 @@ function racket() {
 	fill(255);
 	ellipse(0, 0, 20);
  }
+
+
+function dino1Jump()
+{
+	//decide which way to jump  depending if it is true or false
+	if (p1_y > 605)
+	{
+		dy_p1 = -dy_p1
+	}
+	if( p1_y < 560)
+	{
+		dy_p1 = -dy_p1
+	}
+
+	p1_y += dy_p1;
+	
+}
+
+function dino2Jump()
+{
+	//decide which way to jump  depending if it is true or false
+	if (p2_y > 605)
+	{
+		dy_p2 = -dy_p2;
+	}
+	if (p2_y < 560)
+	{
+		dy_p2 = -dy_p2;
+	}
+
+	p2_y += dy_p2;
+
+}
