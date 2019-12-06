@@ -126,10 +126,10 @@ function endFireworks(){
 	fireworks.push(new PSys(random(width), random(height), random(25, 30)));
 }
 
-function mouseClicked(){
-	hit();
+//function mouseClicked(){
+//	hit();
 	//winScreen();
-}
+//}
 
 function birdie(px, py, dx, dy, s){
 	push();
