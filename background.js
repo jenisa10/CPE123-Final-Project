@@ -50,27 +50,11 @@ function birdie_particle(x , y)
 	this.accelY = 0.01; //gravity
 	this.velX = random(.5, 1.3);
 	this.velY = random(-.5, .5);
-
-	if(fcol == 1){
-		this.pcolorR=255
-		this.pcolorG=243+random(-50,50)
-		this.pcolorB=95+random(-50,50)
-	}
-	else if(fcol % 3 < 1){
-		this.pcolorR=255
-		this.pcolorG=166+random(-50,50)
-		this.pcolorB=247+random(-50,50)
-	}
-	else if(fcol % 3 < 2){
-		this.pcolorR=145+random(-50,50)
-		this.pcolorG=255
-		this.pcolorB=176+random(-50,50)
-	}
-	else if(fcol % 3 < 3){
-		this.pcolorR=145+random(-50,50)
-		this.pcolorG=255+random(-50,50)
-		this.pcolorB=255
-	}
+	
+	this.pcolorR=255
+	this.pcolorG=243+random(-50,50)
+	this.pcolorB=95+random(-50,50)
+	
 	this.locX = x;
 	this.locY = y;
 	this.r = 28.0;
@@ -128,21 +112,21 @@ var end_fireworks = [];
 var col = 1;
 function end_Particle(x , y) 
 {
-   this.accelY = 0.05; //gravity
-   this.velX = random(-1, 1);
-   this.velY = random(.5, 1.3);
+    this.accelY = 0.05; //gravity
+    this.velX = random(-1, 1);
+    this.velY = random(.5, 1.3);
 
-   if(col % 3 < 1){
+   if(fcol % 3 < 1){
       this.pcolorR=255
       this.pcolorG=166+random(-50,50)
       this.pcolorB=247+random(-50,50)
    }
-   else if(col % 3 < 2){
+   else if(fcol % 3 < 2){
       this.pcolorR=145+random(-50,50)
       this.pcolorG=255
       this.pcolorB=176+random(-50,50)
    }
-   else if(col % 3 < 3){
+   else if(fcol % 3 < 3){
       this.pcolorR=145+random(-50,50)
       this.pcolorG=255+random(-50,50)
       this.pcolorB=255
