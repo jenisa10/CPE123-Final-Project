@@ -106,7 +106,6 @@ function birdie_hit(){
 //for the fireworks @ end screen
 // end firework vars
 var end_fireworks = [];
-var col = 1;
 function end_Particle(x , y) 
 {
     this.accelY = 0.05; //gravity
