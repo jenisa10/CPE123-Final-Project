@@ -302,13 +302,13 @@ function updatePlayers() {
 	if(keyIsDown(87)){
 		p1_y-=dino_dy_speed;
 	}
-	if (keyIsDown(82)){
+	if (keyIsDown(83)){
 		p1_y+=dino_dy_speed;
 	}
 	if (keyIsDown(65)){
 		p1_x-=dino_dx_speed;
 	}
-	if (keyIsDown(83)){
+	if (keyIsDown(68)){
 		p1_x+=dino_dx_speed;
 	}
 	if(keyIsDown(UP_ARROW)){
@@ -331,7 +331,7 @@ function updatePlayers() {
 	if (p2_handR > dino_rotate_beg) {
 		p2_handR = dino_rotate_beg;
 	}
-	if (keyIsDown(32)){
+	if (keyIsDown(192)){
 		p1_state = 2;
 		p1_hit = false;
 	}
@@ -340,7 +340,7 @@ function updatePlayers() {
 	} else if (p1_state == 1 && p1_handR >= dino_rotate_beg) {
 		p1_state = 0;
 	}
-	if (keyIsDown(16)){
+	if (keyIsDown(190)){
 		p2_state = 2;
 		p2_hit = false;
 	}
@@ -349,26 +349,26 @@ function updatePlayers() {
 	} else if (p2_state == 1 && p2_handR >= dino_rotate_beg) {
 		p2_state = 0;
 	}
-	push();
-	stroke(155, 0, 0);
-	strokeWeight(10);
-	line(
-		p1_x+r1*cos(2*PI-p1_handR+dtheta),
-		p1_y+r1*sin(2*PI-p1_handR+dtheta),
-		p1_x+r2*cos(2*PI-p1_handR+dtheta),
-		p1_y+r2*sin(2*PI-p1_handR+dtheta));
-	line(
-		p2_x-r1*cos(p2_handR-dtheta),
-		p2_y-r1*sin(p2_handR-dtheta),
-		p2_x-r2*cos(p2_handR-dtheta),
-		p2_y-r2*sin(p2_handR-dtheta));
-	line(
-		birdie_x,
-		birdie_y,
-		birdie_x+birdie_dx,
-		birdie_y+birdie_dy,
-	)
-	pop();
+	//push();
+	//stroke(155, 0, 0);
+	//strokeWeight(10);
+	//line(
+		//p1_x+r1*cos(2*PI-p1_handR+dtheta),
+		//p1_y+r1*sin(2*PI-p1_handR+dtheta),
+		//p1_x+r2*cos(2*PI-p1_handR+dtheta),
+		//p1_y+r2*sin(2*PI-p1_handR+dtheta));
+	//line(
+		//p2_x-r1*cos(p2_handR-dtheta),
+		//p2_y-r1*sin(p2_handR-dtheta),
+		//p2_x-r2*cos(p2_handR-dtheta),
+		//p2_y-r2*sin(p2_handR-dtheta));
+	//line(
+		//birdie_x,
+		//birdie_y,
+		//birdie_x+birdie_dx,
+		//birdie_y+birdie_dy,
+	//)
+	//pop();
 }
 
 function drawPlayers() {
