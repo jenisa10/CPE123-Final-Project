@@ -291,9 +291,9 @@ function draw(){
 		drawMounts(50, 120);
 		//drawMounts(250, 50, 120, 220, 0.005);
 		//drawMounts(250, 50, 120, 220, 0.005);
-		board();
 		//timer();
 		court();
+		board();
 		//grass();
 		updateBirdie();
 		birdie(birdie_x, birdie_y, birdie_dx, birdie_dy, birdie_scale);
@@ -633,8 +633,8 @@ function board(){
 	stroke(100);
 	fill(100);
 	rect(350, 50, 500, 230, 20);
-	line(450, 200, 450, 470);
-	line(750, 200, 750, 470);
+	line(450, 200, 450, 520);
+	line(750, 200, 750, 520);
 	stroke(255);
 	strokeWeight(2);
 	line(345, 230, 855, 230);
