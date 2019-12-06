@@ -278,6 +278,7 @@ function updateBirdie() {
 			birdie_dy = 0
 		}
 		p2_hit = true;
+		birdie_hit();
 	}
 }
 
