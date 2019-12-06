@@ -24,6 +24,9 @@ const dino_dy_speed = 8;
 var p1_x = 250, p1_y = 600, p1_handR = dino_rotate_beg, p1_state = 0; // state 0: idle, 1: resetting, 2: swinging
 var p2_x = 950, p2_y = 600, p2_handR = dino_rotate_beg, p2_state = 0;
 
+var p1_score = 0, p2_score = 0;
+var dead=false;
+
 var birdie_x, birdie_y;
 var birdie_dx, birdie_dy;
 const birdie_scale = 0.7;
@@ -45,11 +48,11 @@ var bpy;
 //var birdie_thetaAdd = [];
 
 //definition of a particle
-function birdie_particle(x , y)
-{
+function birdie_particle(x , y) {
 	this.accelY = 0.01; //gravity
 	this.velX = random(.5, 1.3);
 	this.velY = random(-.5, .5);
+
 	
 	this.pcolorR=255
 	this.pcolorG=243+random(-50,50)
@@ -60,16 +63,14 @@ function birdie_particle(x , y)
 	this.r = 28.0;
 	this.life = 80;
 	// a function to update the particle each frame
-	this.updateP = function()
-	{
+	this.updateP = function() {
 		this.velY += this.accelY;
 		this.locX += this.velX;
 		this.locY += this.velY;
 		this.life -= 1;
 	};
 	// function to draw a particle
-	this.renderP = function()
-	{
+	this.renderP = function() {
 		noStroke();
 		push();
 			fill(this.pcolorR, this.pcolorG, this.pcolorB, this.life);
@@ -81,19 +82,15 @@ function birdie_particle(x , y)
 
 
 // define a group of particles as a particleSys
-function birdie_PSys(sX, sY, num)
-{
+function birdie_PSys(sX, sY, num) {
 	// the data - lots of particles
 	this.particles = [];
-	for (var i=0; i < num; i++)
-	{
+	for (var i=0; i < num; i++) {
 		this.particles.push(new birdie_particle(sX, sY));
 	}
 	// function defining what to do each frame
-	this.run = function()
-	{
-		for (var i=0; i < this.particles.length; i++)
-		{
+	this.run = function() {
+		for (var i=0; i < this.particles.length; i++) {
 			//update each particle per frame
 			this.particles[i].updateP();
 			this.particles[i].renderP();
@@ -136,42 +133,42 @@ function end_Particle(x , y)
    this.r = 8.0;
    this.life = 255;
   
-   this.updateP = function()
-   {
-      this.velY += this.accelY;
-      this.locX += this.velX;
-      this.locY += this.velY;
-      this.life -= 2.5;
-   };
+	this.updateP = function()
+	{
+		this.velY += this.accelY;
+		this.locX += this.velX;
+		this.locY += this.velY;
+		this.life -= 2.5;
+	};
   
-   this.renderP = function() 
-   {
-      noStroke();
-      push();
-         fill(this.pcolorR, this.pcolorG, this.pcolorB, this.life);
-         translate(this.locX, this.locY);
-         ellipse(0, 0, this.r, this.r);
-      pop();
-   };
+	this.renderP = function() 
+	{
+		noStroke();
+		push();
+			fill(this.pcolorR, this.pcolorG, this.pcolorB, this.life);
+			translate(this.locX, this.locY);
+			ellipse(0, 0, this.r, this.r);
+		pop();
+	};
 } //end of particle object definition
 
 function end_PSys(sX, sY, num)
 {
-   this.particles = [];
-   for (var i=0; i < num; i++) 
-   {
-      this.particles.push(new end_Particle(sX, sY));
-   }
+	this.particles = [];
+	for (var i=0; i < num; i++) 
+	{
+		this.particles.push(new end_Particle(sX, sY));
+	}
   
-   this.run = function() 
-   {
-      for (var i=0; i < this.particles.length; i++) 
-      {
-         //update each particle per frame
-         this.particles[i].updateP();
-         this.particles[i].renderP();
-      }
-   }
+	this.run = function() 
+	{
+		for (var i=0; i < this.particles.length; i++) 
+		{
+			//update each particle per frame
+			this.particles[i].updateP();
+			this.particles[i].renderP();
+		}
+	}
 }
 
 function endFireworkStart(){
@@ -206,6 +203,16 @@ function birdie_lines(rot){
 	pop();
 }
 
+function initGame() {
+	birdie_x = 0;
+	birdie_y = 0;
+	birdie_dx = 80;
+	birdie_dy = 0;
+	p1_x = 250, p1_y = 600, p1_handR = dino_rotate_beg, p1_state = 0; // state 0: idle, 1: resetting, 2: swinging
+	p2_x = 950, p2_y = 600, p2_handR = dino_rotate_beg, p2_state = 0;
+	dead = false;
+}
+
 function setup(){
 	createCanvas(1200, 800);
 	//birdie_x = 950;
@@ -213,17 +220,15 @@ function setup(){
 	//birdie_dx = -180;
 	//birdie_dy = 5;
 	//
-	birdie_x = 0;
-	birdie_y = 0;
-	birdie_dx = 80;
-	birdie_dy = 0;
+	initGame();
 	scene1 = false;
 	scene2 = true;
 	scene3 = false;
-	grass_initialize();
+	//grass_initialize();
 }
 
 function draw(){
+	birdie_hit();
 	//bpx = mouseX;
 	//bpy = mouseY;
 	//background(150);
@@ -231,8 +236,8 @@ function draw(){
 		birdie_sparks[i].run()
 	}
 	for(i=0;i<end_fireworks.length;i++){
-      end_fireworks[i].run()
-   	}
+		end_fireworks[i].run()
+		}
 
 	if (scene1 == true) {
 		title();
@@ -296,6 +301,7 @@ function updateBirdie() {
 	}
 	p1_theta = 2*PI-p1_handR+dtheta
 	p2_theta = p2_handR-dtheta
+	//if (!dead) {
 	if (!p1_hit && intersects(
 		p1_x+r1*cos(p1_theta),
 		p1_y+r1*sin(p1_theta),
@@ -336,6 +342,12 @@ function updateBirdie() {
 		p2_hit = true;
 		birdie_hit();
 	}
+	//}
+	if (birdie_y > 700) {
+		if (!dead) {
+			dead = true;
+		}
+	}
 }
 
 // https://stackoverflow.com/a/24392281/4600414
@@ -343,11 +355,11 @@ function intersects(a,b,c,d,p,q,r,s) {
   var det, gamma, lambda;
   det = (c - a) * (s - q) - (r - p) * (d - b);
   if (det === 0) {
-    return false;
+	 return false;
   } else {
-    lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
-    gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
-    return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
+	 lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
+	 gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
+	 return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
   }
 }
 
@@ -748,12 +760,12 @@ function draw_dinosaur(x, y, sc, handR, player) {
 					translate(0, -40)
 					ellipse(x_multi * 0, 105, x_multi * 45, 80);
 
-					line(x_multi * 5   , 142 , x_multi * 5   , 67);
+					line(x_multi * 5	, 142 , x_multi * 5	, 67);
 					line(x_multi * -5  , 142 , x_multi * -5  , 67);
 					line(x_multi * -15 , 135 , x_multi * -15 , 75);
 					line(x_multi * 15  , 135 , x_multi * 15  , 75);
 
-					line(x_multi * 0   , 145 , x_multi * 0   , 65);
+					line(x_multi * 0	, 145 , x_multi * 0	, 65);
 					line(x_multi * -10 , 140 , x_multi * -10 , 70);
 					line(x_multi * -20 , 125 , x_multi * -20 , 85);
 					line(x_multi * 10  , 140 , x_multi * 10  , 70);
