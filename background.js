@@ -33,6 +33,7 @@ var dead=false;
 
 var birdie_x, birdie_y;
 var birdie_dx, birdie_dy;
+var birdie_lasthit = 0;
 const birdie_scale = 0.7;
 const gravity = 0.8;
 
@@ -216,6 +217,7 @@ function initGame() {
 	birdie_y = 0;
 	birdie_dx = 80;
 	birdie_dy = 0;
+	birdie_lasthit = 0;
 	p1_x = 250, p1_y = 600, p1_handR = dino_rotate_beg, p1_state = 0; // state 0: idle, 1: resetting, 2: swinging
 	p2_x = 950, p2_y = 600, p2_handR = dino_rotate_beg, p2_state = 0;
 	dead = false;
@@ -319,6 +321,7 @@ function updateBirdie() {
 		birdie_y-sin(birdie_theta)*collider_len,
 		birdie_x+cos(birdie_theta)*collider_len,
 		birdie_y+sin(birdie_theta)*collider_len)) {
+		birdie_lasthit = 1;
 		birdie_dx = (p1_state == 2 ? strength : bounce) * cos(p1_theta + PI/2);
 		birdie_dy = (p1_state == 2 ? strength : bounce) * sin(p1_theta + PI/2);
 		p1_hit = true;
@@ -339,6 +342,7 @@ function updateBirdie() {
 		birdie_y-sin(birdie_theta)*collider_len,
 		birdie_x+cos(birdie_theta)*collider_len,
 		birdie_y+sin(birdie_theta)*collider_len)) {
+		birdie_lasthit = 2;
 		birdie_dx = (p2_state == 2 ? strength : bounce) * cos(p2_theta + PI/2);
 		birdie_dy = (p2_state == 2 ? strength : bounce) * sin(p2_theta + PI/2);
 		if (isNaN(birdie_dx)) {
@@ -354,9 +358,25 @@ function updateBirdie() {
 	if (birdie_y > 700) {
 		if (!dead) {
 			if (birdie_x < width/2) {
-				p2_score++;
+				if (birdie_x < 57) { // out of bound
+					if (birdie_lasthit == 1) {
+						p2_score++;
+					} else if (birdie_lasthit == 2) {
+						p1_score++;
+					}
+				} else {
+					p2_score++;
+				}
 			} else {
-				p1_score++;
+				if (birdie_x > 1137) { // out of bound
+					if (birdie_lasthit == 1) {
+						p2_score++;
+					} else if (birdie_lasthit == 2) {
+						p1_score++;
+					}
+				} else {
+					p1_score++;
+				}
 			}
 			dead = true;
 		}
