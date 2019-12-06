@@ -9,10 +9,14 @@ var grass_y=[];
 var grass_dx=[];
 var grass_dy=[];
 
-const dino_x_min = 100;
-const dino_x_max = 1100;
-const dino_y_min = 550;
-const dino_y_max = 750;
+const dino1_x_min = 0;
+const dino1_x_max = 575;
+const dino1_y_min = 450;
+const dino1_y_max = 800;
+const dino2_x_min = 625;
+const dino2_x_max = 1200;
+const dino2_y_min = 450;
+const dino2_y_max = 800;
 const dino_scale = 0.5;
 const dino_rotate_beg = 2.3;
 const dino_rotate_end = 1.1;
@@ -29,9 +33,12 @@ var dy_p2 = 1;
 
 var p1_jumping = true;
 var p2_jumping = true;
+var p1_score = 0, p2_score = 0;
+var dead=false;
 
 var birdie_x, birdie_y;
 var birdie_dx, birdie_dy;
+var birdie_lasthit = 0;
 const birdie_scale = 0.7;
 const gravity = 0.8;
 
@@ -39,7 +46,8 @@ var newGame = true;
 
 // declare of a variable to represent a particle system
 var fireW1;
-var fireworks = [];
+var birdie_sparks = [];
+var end_fireworks = [];
 var fcol = 1;
 var bpx;
 var bpy;
@@ -50,47 +58,29 @@ var bpy;
 //var birdie_thetaAdd = [];
 
 //definition of a particle
-function Particle(x , y)
-{
+function birdie_particle(x , y) {
 	this.accelY = 0.01; //gravity
 	this.velX = random(.5, 1.3);
-	this.velY = random(-.5, .5);
+	this.velY = random(-1.15, 1.15);
 
-	if(fcol == 1){
-		this.pcolorR=255
-		this.pcolorG=243+random(-50,50)
-		this.pcolorB=95+random(-50,50)
-	}
-	else if(fcol % 3 < 1){
-		this.pcolorR=255
-		this.pcolorG=166+random(-50,50)
-		this.pcolorB=247+random(-50,50)
-	}
-	else if(fcol % 3 < 2){
-		this.pcolorR=145+random(-50,50)
-		this.pcolorG=255
-		this.pcolorB=176+random(-50,50)
-	}
-	else if(fcol % 3 < 3){
-		this.pcolorR=145+random(-50,50)
-		this.pcolorG=255+random(-50,50)
-		this.pcolorB=255
-	}
+	
+	this.pcolorR=255
+	this.pcolorG=243+random(-50,50)
+	this.pcolorB=95+random(-50,50)
+	
 	this.locX = x;
 	this.locY = y;
 	this.r = 8.0;
 	this.life = 80;
 	// a function to update the particle each frame
-	this.updateP = function()
-	{
+	this.updateP = function() {
 		this.velY += this.accelY;
 		this.locX += this.velX;
 		this.locY += this.velY;
 		this.life -= 1;
 	};
 	// function to draw a particle
-	this.renderP = function()
-	{
+	this.renderP = function() {
 		noStroke();
 		push();
 			fill(this.pcolorR, this.pcolorG, this.pcolorB, this.life);
@@ -102,19 +92,20 @@ function Particle(x , y)
 
 
 // define a group of particles as a particleSys
-function PSys(sX, sY, num)
-{
+function birdie_PSys(sX, sY, num) {
 	// the data - lots of particles
 	this.particles = [];
-	for (var i=0; i < num; i++)
-	{
-		this.particles.push(new Particle(sX, sY));
+	for (var i=0; i < num; i++) {
+		this.particles.push(new birdie_particle(sX, sY));
 	}
 	// function defining what to do each frame
-	this.run = function()
-	{
-		for (var i=0; i < this.particles.length; i++)
-		{
+	this.run = function() {
+		if(this.particles.length>0){
+			if(this.particles[0].life<=0){
+				this.particles.splice(0,1);
+			}
+		}
+		for (var i=0; i < this.particles.length; i++) {
 			//update each particle per frame
 			this.particles[i].updateP();
 			this.particles[i].renderP();
@@ -123,18 +114,80 @@ function PSys(sX, sY, num)
 }
 
 
-function hit(){
-	fireworks.push(new PSys(bpx, bpy, random(15, 25)));
+function birdie_hit(){
+	birdie_sparks.push(new birdie_PSys(birdie_x, birdie_y, random(25, 45)));
 }
 
-function endFireworks(){
+//for the fireworks @ end screen
+// end firework vars
+var end_fireworks = [];
+function end_Particle(x , y) 
+{
+    this.accelY = 0.05; //gravity
+    this.velX = random(-1, 1);
+    this.velY = random(.5, 1.3);
+
+   if(fcol % 3 < 1){
+      this.pcolorR=255
+      this.pcolorG=166+random(-50,50)
+      this.pcolorB=247+random(-50,50)
+   }
+   else if(fcol % 3 < 2){
+      this.pcolorR=145+random(-50,50)
+      this.pcolorG=255
+      this.pcolorB=176+random(-50,50)
+   }
+   else if(fcol % 3 < 3){
+      this.pcolorR=145+random(-50,50)
+      this.pcolorG=255+random(-50,50)
+      this.pcolorB=255
+   }
+   this.locX = x;
+   this.locY = y;
+   this.r = 5.0;
+   this.life = 255;
+  
+	this.updateP = function()
+	{
+		this.velY += this.accelY;
+		this.locX += this.velX;
+		this.locY += this.velY;
+		this.life -= 2.5;
+	};
+  
+	this.renderP = function() 
+	{
+		noStroke();
+		push();
+			fill(this.pcolorR, this.pcolorG, this.pcolorB, this.life);
+			translate(this.locX, this.locY);
+			ellipse(0, 0, this.r, this.r);
+		pop();
+	};
+} //end of particle object definition
+
+function end_PSys(sX, sY, num)
+{
+	this.particles = [];
+	for (var i=0; i < num; i++) 
+	{
+		this.particles.push(new end_Particle(sX, sY));
+	}
+  
+	this.run = function() 
+	{
+		for (var i=0; i < this.particles.length; i++) 
+		{
+			//update each particle per frame
+			this.particles[i].updateP();
+			this.particles[i].renderP();
+		}
+	}
+}
+
+function endFireworkStart(){
 	fcol++
-	fireworks.push(new PSys(random(width), random(height), random(25, 30)));
-}
-
-function mouseClicked(){
-	hit();
-	//winScreen();
+	end_fireworks.push(new PSys(random(width), random(height), random(25, 30)));
 }
 
 function birdie(px, py, dx, dy, s){
@@ -164,6 +217,17 @@ function birdie_lines(rot){
 	pop();
 }
 
+function initGame() {
+	birdie_x = 0;
+	birdie_y = 0;
+	birdie_dx = 80;
+	birdie_dy = 0;
+	birdie_lasthit = 0;
+	p1_x = 250, p1_y = 600, p1_handR = dino_rotate_beg, p1_state = 0; // state 0: idle, 1: resetting, 2: swinging
+	p2_x = 950, p2_y = 600, p2_handR = dino_rotate_beg, p2_state = 0;
+	dead = false;
+}
+
 function setup(){
 	createCanvas(1200, 800);
 	//birdie_x = 950;
@@ -171,14 +235,11 @@ function setup(){
 	//birdie_dx = -180;
 	//birdie_dy = 5;
 	//
-	birdie_x = 0;
-	birdie_y = 0;
-	birdie_dx = 80;
-	birdie_dy = 0;
+	initGame();
 	scene1 = false;
 	scene2 = true;
 	scene3 = false;
-	grass_initialize();
+	//grass_initialize();
 }
 
 function draw(){
@@ -204,6 +265,9 @@ function draw(){
 		birdie(birdie_x, birdie_y, birdie_dx, birdie_dy, birdie_scale);
 		updatePlayers();
 		drawPlayers();
+		for(i=0;i<birdie_sparks.length;i++){
+			birdie_sparks[i].run()
+		}
 	}
 	if (scene3 == true){
 		endPage();
@@ -252,6 +316,8 @@ function updateBirdie() {
 	}
 	p1_theta = 2*PI-p1_handR+dtheta
 	p2_theta = p2_handR-dtheta
+	if (dead) {
+	} else {
 	if (!p1_hit && intersects(
 		p1_x+r1*cos(p1_theta),
 		p1_y+r1*sin(p1_theta),
@@ -261,9 +327,11 @@ function updateBirdie() {
 		birdie_y-sin(birdie_theta)*collider_len,
 		birdie_x+cos(birdie_theta)*collider_len,
 		birdie_y+sin(birdie_theta)*collider_len)) {
+		birdie_lasthit = 1;
 		birdie_dx = (p1_state == 2 ? strength : bounce) * cos(p1_theta + PI/2);
 		birdie_dy = (p1_state == 2 ? strength : bounce) * sin(p1_theta + PI/2);
 		p1_hit = true;
+		birdie_hit();
 		if (isNaN(birdie_dx)) {
 			birdie_dx = strength;
 		}
@@ -280,6 +348,7 @@ function updateBirdie() {
 		birdie_y-sin(birdie_theta)*collider_len,
 		birdie_x+cos(birdie_theta)*collider_len,
 		birdie_y+sin(birdie_theta)*collider_len)) {
+		birdie_lasthit = 2;
 		birdie_dx = (p2_state == 2 ? strength : bounce) * cos(p2_theta + PI/2);
 		birdie_dy = (p2_state == 2 ? strength : bounce) * sin(p2_theta + PI/2);
 		if (isNaN(birdie_dx)) {
@@ -289,6 +358,44 @@ function updateBirdie() {
 			birdie_dy = 0
 		}
 		p2_hit = true;
+		birdie_hit();
+	}
+	}
+	if (birdie_y > 700) {
+		if (!dead) {
+			if (birdie_x < width/2) {
+				if (birdie_x < 57) { // out of bound
+					if (birdie_lasthit == 1) {
+						p2_score++;
+					} else if (birdie_lasthit == 2) {
+						p1_score++;
+					}
+				} else {
+					p2_score++;
+				}
+			} else {
+				if (birdie_x > 1137) { // out of bound
+					if (birdie_lasthit == 1) {
+						p2_score++;
+					} else if (birdie_lasthit == 2) {
+						p1_score++;
+					}
+				} else {
+					p1_score++;
+				}
+			}
+			dead = true;
+		}
+		if (birdie_dy > 0) {
+			if (birdie_dy < 10) {
+				birdie_dy = 0;
+				birdie_dx *= 0.8;
+			}
+			if (birdie_dx > -1 && birdie_dx < 1) {
+				initGame();
+			}
+			birdie_dy = -0.6 * birdie_dy;
+		}
 	}
 }
 
@@ -297,11 +404,11 @@ function intersects(a,b,c,d,p,q,r,s) {
   var det, gamma, lambda;
   det = (c - a) * (s - q) - (r - p) * (d - b);
   if (det === 0) {
-    return false;
+	 return false;
   } else {
-    lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
-    gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
-    return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
+	 lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
+	 gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
+	 return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
   }
 }
 
@@ -366,6 +473,30 @@ function updatePlayers() {
 		dino2Jump();
 	}
 
+	if (p1_x>dino1_x_max){
+		p1_x=dino1_x_max;
+	}
+	if (p1_x<dino1_x_min){
+		p1_x=dino1_x_min;	
+	}
+	if (p1_y>dino1_y_max){
+		p1_y=dino1_y_max;
+	}
+	if (p1_y<dino1_y_min){
+		p1_y=dino1_y_min;	
+	}
+	if (p2_x>dino2_x_max){
+		p2_x=dino2_x_max;
+	}
+	if (p2_x<dino2_x_min){
+		p2_x=dino2_x_min;	
+	}
+	if (p2_y>dino2_y_max){
+		p2_y=dino2_y_max;
+	}
+	if (p2_y<dino2_y_min){
+		p2_y=dino2_y_min;	
+	}
 	//push();
 	//stroke(155, 0, 0);
 	//strokeWeight(10);
@@ -455,13 +586,17 @@ function board(){
 	textSize(36);
 	//textFont('Courier New');
 	text('TIME', 400, 270);
-	text('Player 1', 380, 90);
-	text('Player 2', 640, 90);
+	text('Player 1', 410, 90);
+	text('Player 2', 660, 90);
 	//time
 	if(time <= 60){
 		fill(255);
 		text(time, width/2, 270);
 	}
+	textSize(72);
+	text(p1_score, 460, 200);
+	text(':', 590, 200);
+	text(p2_score, 700, 200);
 }
 
 function timer(){
@@ -712,12 +847,12 @@ function draw_dinosaur(x, y, sc, handR, player) {
 					translate(0, -40)
 					ellipse(x_multi * 0, 105, x_multi * 45, 80);
 
-					line(x_multi * 5   , 142 , x_multi * 5   , 67);
+					line(x_multi * 5	, 142 , x_multi * 5	, 67);
 					line(x_multi * -5  , 142 , x_multi * -5  , 67);
 					line(x_multi * -15 , 135 , x_multi * -15 , 75);
 					line(x_multi * 15  , 135 , x_multi * 15  , 75);
 
-					line(x_multi * 0   , 145 , x_multi * 0   , 65);
+					line(x_multi * 0	, 145 , x_multi * 0	, 65);
 					line(x_multi * -10 , 140 , x_multi * -10 , 70);
 					line(x_multi * -20 , 125 , x_multi * -20 , 85);
 					line(x_multi * 10  , 140 , x_multi * 10  , 70);
