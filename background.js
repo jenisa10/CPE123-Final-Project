@@ -24,6 +24,9 @@ const dino_dy_speed = 8;
 var p1_x = 250, p1_y = 600, p1_handR = dino_rotate_beg, p1_state = 0; // state 0: idle, 1: resetting, 2: swinging
 var p2_x = 950, p2_y = 600, p2_handR = dino_rotate_beg, p2_state = 0;
 
+var p1_score = 0, p2_score = 0;
+var dead=false;
+
 var birdie_x, birdie_y;
 var birdie_dx, birdie_dy;
 const birdie_scale = 0.7;
@@ -158,6 +161,16 @@ function birdie_lines(rot){
 	pop();
 }
 
+function initGame() {
+	birdie_x = 0;
+	birdie_y = 0;
+	birdie_dx = 80;
+	birdie_dy = 0;
+	p1_x = 250, p1_y = 600, p1_handR = dino_rotate_beg, p1_state = 0; // state 0: idle, 1: resetting, 2: swinging
+	p2_x = 950, p2_y = 600, p2_handR = dino_rotate_beg, p2_state = 0;
+	dead = false;
+}
+
 function setup(){
 	createCanvas(1200, 800);
 	//birdie_x = 950;
@@ -165,10 +178,7 @@ function setup(){
 	//birdie_dx = -180;
 	//birdie_dy = 5;
 	//
-	birdie_x = 0;
-	birdie_y = 0;
-	birdie_dx = 80;
-	birdie_dy = 0;
+	initGame();
 	scene1 = false;
 	scene2 = true;
 	scene3 = false;
@@ -245,6 +255,7 @@ function updateBirdie() {
 	}
 	p1_theta = 2*PI-p1_handR+dtheta
 	p2_theta = p2_handR-dtheta
+	//if (!dead) {
 	if (!p1_hit && intersects(
 		p1_x+r1*cos(p1_theta),
 		p1_y+r1*sin(p1_theta),
@@ -282,6 +293,12 @@ function updateBirdie() {
 			birdie_dy = 0
 		}
 		p2_hit = true;
+	}
+	//}
+	if (birdie_y > 700) {
+		if (!dead) {
+			dead = true;
+		}
 	}
 }
 
