@@ -31,8 +31,8 @@ var p2_x = 950, p2_y = 600, p2_handR = dino_rotate_beg, p2_state = 0;
 var dy_p1 =1;
 var dy_p2 = 1;
 
-var p1_jumping = true;
-var p2_jumping = true;
+var p1_jumping = false;
+var p2_jumping = false;
 var p1_score = 0, p2_score = 0;
 var dead=false;
 
@@ -537,8 +537,9 @@ function back(){
 	fill(100);
 	rect(0, 0, 150, 50);
 	fill(255);
-	text('HOME', 25, 40);
-	text('END', 1090, 40);
+	textSize(28);
+	text('HOME', 30, 35);
+	text('END', 1100, 35);
 }
 
 function court(){
