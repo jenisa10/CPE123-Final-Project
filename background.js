@@ -11,12 +11,12 @@ var grass_dy=[];
 
 const dino1_x_min = 0;
 const dino1_x_max = 575;
-const dino1_y_min = 800;
-const dino1_y_max = 250;
+const dino1_y_min = 450;
+const dino1_y_max = 800;
 const dino2_x_min = 625;
-const dino2_x_max = 1100;
-const dino2_y_min = 800;
-const dino2_y_max = 250;
+const dino2_x_max = 1200;
+const dino2_y_min = 450;
+const dino2_y_max = 800;
 const dino_scale = 0.5;
 const dino_rotate_beg = 2.3;
 const dino_rotate_end = 1.1;
@@ -459,6 +459,27 @@ function updatePlayers() {
 	}
 	if (p1_x>dino1_x_max){
 		p1_x=dino1_x_max;
+	}
+	if (p1_x<dino1_x_min){
+		p1_x=dino1_x_min;	
+	}
+	if (p1_y>dino1_y_max){
+		p1_y=dino1_y_max;
+	}
+	if (p1_y<dino1_y_min){
+		p1_y=dino1_y_min;	
+	}
+	if (p2_x>dino2_x_max){
+		p2_x=dino2_x_max;
+	}
+	if (p2_x<dino2_x_min){
+		p2_x=dino2_x_min;	
+	}
+	if (p2_y>dino2_y_max){
+		p2_y=dino2_y_max;
+	}
+	if (p2_y<dino2_y_min){
+		p2_y=dino2_y_min;	
 	}
 	//push();
 	//stroke(155, 0, 0);
