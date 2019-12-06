@@ -129,7 +129,7 @@ function end_Particle(x , y)
    }
    this.locX = x;
    this.locY = y;
-   this.r = 8.0;
+   this.r = 5.0;
    this.life = 255;
   
 	this.updateP = function()
