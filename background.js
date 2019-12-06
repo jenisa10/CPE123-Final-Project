@@ -25,14 +25,20 @@ const dino_return_vel = 0.07;
 const dino_dx_speed = 10;
 const dino_dy_speed = 8;
 
+const bestoftxt = "ELEVEN";
+const bestof = 11;
+
+const end_of_game_jump_count = 10;
+
 var p1_x = 250, p1_y = 600, p1_handR = dino_rotate_beg, p1_state = 0; // state 0: idle, 1: resetting, 2: swinging
 var p2_x = 950, p2_y = 600, p2_handR = dino_rotate_beg, p2_state = 0;
 
-var dy_p1 =1;
-var dy_p2 = 1;
+var dy_p1 = 7;
+var dy_p2 = 7;
 
 var p1_jumping = false;
 var p2_jumping = false;
+var jump_count = 0;
 var p1_score = 0, p2_score = 0;
 var dead=false;
 
@@ -42,7 +48,7 @@ var birdie_lasthit = 0;
 const birdie_scale = 0.7;
 const gravity = 0.8;
 
-var newGame = true;
+var gameEnded = false;
 
 // declare of a variable to represent a particle system
 var fireW1;
@@ -218,14 +224,37 @@ function birdie_lines(rot){
 }
 
 function initGame() {
-	birdie_x = 0;
-	birdie_y = 0;
-	birdie_dx = 80;
-	birdie_dy = 0;
+	gameEnded = false;
+	p1_score = 0;
+	p2_score = 0;
+	jump_count = 0;
+}
+
+function initPoint() {
+	if ((p1_score + p2_score) % 2 == 0) {
+		birdie_x = 0;
+		birdie_y = 0;
+		birdie_dx = 80;
+		birdie_dy = 0;
+	} else {
+		birdie_x = width;
+		birdie_y = 0;
+		birdie_dx = -80;
+		birdie_dy = 0;
+	}
 	birdie_lasthit = 0;
-	p1_x = 250, p1_y = 600, p1_handR = dino_rotate_beg, p1_state = 0; // state 0: idle, 1: resetting, 2: swinging
-	p2_x = 950, p2_y = 600, p2_handR = dino_rotate_beg, p2_state = 0;
+	p1_x = 250;
+	p1_y = 600;
+	p1_handR = dino_rotate_beg;
+	p1_state = 0; // state 0: idle, 1: resetting, 2: swinging
+	p2_x = 950;
+	p2_y = 600;
+	p2_handR = dino_rotate_beg;
+	p2_state = 0;
 	dead = false;
+	p1_hit = false;
+	p2_hit = false;
+	fcol = 1;
 }
 
 function setup(){
@@ -235,7 +264,7 @@ function setup(){
 	//birdie_dx = -180;
 	//birdie_dy = 5;
 	//
-	initGame();
+	initPoint();
 	scene1 = false;
 	scene2 = true;
 	scene3 = false;
@@ -258,7 +287,7 @@ function draw(){
 		back();
 		drawMounts(250, 50, 120, 220, 0.005);
 		board();
-		timer();
+		//timer();
 		//grass();
 		court();
 		updateBirdie();
@@ -385,6 +414,14 @@ function updateBirdie() {
 				}
 			}
 			dead = true;
+			if (p1_score == bestof) {
+				p1_jumping = true;
+				gameEnded = true;
+			}
+			if (p2_score == bestof) {
+				p2_jumping = true;
+				gameEnded = true;
+			}
 		}
 		if (birdie_dy > 0) {
 			if (birdie_dy < 10) {
@@ -392,7 +429,9 @@ function updateBirdie() {
 				birdie_dx *= 0.8;
 			}
 			if (birdie_dx > -1 && birdie_dx < 1) {
-				initGame();
+				if(!gameEnded) {
+					initPoint();
+				}
 			}
 			birdie_dy = -0.6 * birdie_dy;
 		}
@@ -413,6 +452,19 @@ function intersects(a,b,c,d,p,q,r,s) {
 }
 
 function updatePlayers() {
+	if (gameEnded) {
+		if (p1_jumping) {
+			dino1Jump();
+		}
+		if (p2_jumping) {
+			dino2Jump();
+		}
+		if (jump_count > end_of_game_jump_count) {
+			scene2 = false;
+			scene3 = true;
+		}
+		return;
+	}
 	if(keyIsDown(87)){
 		p1_y-=dino_dy_speed;
 	}
@@ -464,14 +516,6 @@ function updatePlayers() {
 		p2_state = 0;
 	}
 
-	if (p1_jumping) 
-	{
-		dino1Jump();
-	}
-	if (p2_jumping)
-	{
-		dino2Jump();
-	}
 
 	if (p1_x>dino1_x_max){
 		p1_x=dino1_x_max;
@@ -586,14 +630,14 @@ function board(){
 	noStroke();
 	textSize(36);
 	//textFont('Courier New');
-	text('TIME', 400, 270);
+	text('BEST OF ' + bestoftxt, 450, 270);
 	text('Player 1', 410, 90);
 	text('Player 2', 660, 90);
 	//time
-	if(time <= 60){
-		fill(255);
-		text(time, width/2, 270);
-	}
+	//if(time <= 60){
+		//fill(255);
+		//text(time, width/2, 270);
+	//}
 	textSize(72);
 	text(p1_score, 460, 200);
 	text(':', 590, 200);
@@ -692,7 +736,8 @@ function setGradient(x, y, w, h, c1, c2, axis) {
 function mousePressed() {
 	if (scene1 == true) {
 		if (mouseX > 400 && mouseX < 800 && mouseY > 540 && mouseY < 700) {
-			scene2 = true;
+			initGame();
+			scene2= true;
 			scene1 = false;
 			scene3 = false;
 		}
@@ -884,18 +929,16 @@ function racket() {
  }
 
 
-function dino1Jump()
-{
+function dino1Jump() {
 	//decide which way to jump  depending if it is true or false
-	if (p1_y > 605)
-	{
+	if (p1_y > 605) {
 		dy_p1 = -dy_p1
+		jump_count++;
 	}
-	if( p1_y < 560)
-	{
+	if( p1_y < 560) {
 		dy_p1 = -dy_p1
+		jump_count++;
 	}
-
 	p1_y += dy_p1;
 	
 }
