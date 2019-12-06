@@ -228,6 +228,7 @@ function initGame() {
 	p1_score = 0;
 	p2_score = 0;
 	jump_count = 0;
+	calcMounts(250, 220, 0.005);
 }
 
 function initPoint() {
@@ -259,11 +260,13 @@ function initPoint() {
 
 function setup(){
 	createCanvas(1200, 800);
+	frameRate(30);
 	//birdie_x = 950;
 	//birdie_y = 200;
 	//birdie_dx = -180;
 	//birdie_dy = 5;
 	//
+	initGame();
 	initPoint();
 	scene1 = false;
 	scene2 = true;
@@ -285,11 +288,13 @@ function draw(){
 	}
 	if (scene2 == true) {
 		back();
-		drawMounts(250, 50, 120, 220, 0.005);
+		drawMounts(50, 120);
+		//drawMounts(250, 50, 120, 220, 0.005);
+		//drawMounts(250, 50, 120, 220, 0.005);
 		board();
 		//timer();
-		//grass();
 		court();
+		//grass();
 		updateBirdie();
 		birdie(birdie_x, birdie_y, birdie_dx, birdie_dy, birdie_scale);
 		updatePlayers();
@@ -297,6 +302,11 @@ function draw(){
 		for(i=0;i<birdie_sparks.length;i++){
 			birdie_sparks[i].run()
 		}
+	let fps = frameRate();
+	fill(255);
+	stroke(0);
+	textSize(50);
+	text("FPS: " + fps.toFixed(0), 100, 100);
 	}
 	if (scene3 == true){
 		endPage();
@@ -569,8 +579,6 @@ function drawPlayers() {
 }
 
 function back(){
-	fill(180, 220, 255);
-	rect(0, 0, 1200, 800);
 	var color1 = color(0, 140, 200);
 	var color2 = color(255, 165, 200);
 	setGradient(0, 0, width, 500, color1, color2, "Y");
@@ -588,7 +596,12 @@ function back(){
 
 function court(){
 	push();
-	translate(0, 50);
+		noStroke();
+		fill(180, 220, 255);
+		rect(0, 500, 1200, 800);
+	pop();
+	push();
+		translate(0, 50);
 		strokeWeight(8);
 		stroke(255);
 		fill(255, 182, 180);
@@ -615,6 +628,7 @@ function court(){
 }
 
 function board(){
+	push();
 	strokeWeight(12);
 	stroke(100);
 	fill(100);
@@ -642,6 +656,7 @@ function board(){
 	text(p1_score, 460, 200);
 	text(':', 590, 200);
 	text(p2_score, 700, 200);
+	pop();
 }
 
 function timer(){
@@ -674,12 +689,37 @@ function grass_initialize(){
 	}
 }
 
-function drawMounts(peak, range, color, scale, noiseScale) {
-	for (var x=0; x < width; x++) {
-		var noiseVal = noise((500+x)*noiseScale, 500*noiseScale);
-		stroke(color, range);
-		line(x, (peak) + noiseVal*scale, x, height);
+var mount_x = [], mount_y = [], mount_width = [], mount_height = [], mount_i;
+const mount_sep = 3;
+function calcMounts(peak, scale, noiseScale) {
+	var noiseVal;
+	mount_x = [], mount_y = [], mount_width = [], mount_height = [], mount_i;
+	for (var x=-10; x < width; x+=mount_sep) {
+		noiseVal = noise((500+x)*noiseScale, 500*noiseScale);
+		mount_x.push(x);
+		mount_y.push((peak) + noiseVal*scale);
+		mount_width.push(x);
+		mount_height.push(height);
 	}
+}
+
+function drawMounts(color, range) {
+	//stroke(color, range);
+	push();
+	noStroke();
+	fill(color, range);
+	//strokeWeight(mount_sep);
+	beginShape();
+	var ml = mount_x.length;
+	for (mount_i = 0; mount_i < ml; ++mount_i) {
+		//line(mount_x[mount_i], mount_y[mount_i], mount_width[mount_i], mount_height[mount_i]);
+		curveVertex(mount_x[mount_i], mount_y[mount_i]);
+	}
+	vertex(width, height);
+	vertex(1, height);
+	vertex(0, height);
+	endShape();
+	pop();
 }
 
 function endPage(){
