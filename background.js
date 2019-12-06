@@ -257,6 +257,7 @@ function updateBirdie() {
 		birdie_dx = (p1_state == 2 ? strength : bounce) * cos(p1_theta + PI/2);
 		birdie_dy = (p1_state == 2 ? strength : bounce) * sin(p1_theta + PI/2);
 		p1_hit = true;
+		birdiehit();
 		if (isNaN(birdie_dx)) {
 			birdie_dx = strength;
 		}
