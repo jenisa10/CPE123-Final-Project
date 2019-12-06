@@ -100,7 +100,7 @@ function birdie_PSys(sX, sY, num) {
 
 
 function birdie_hit(){
-	birdie_sparks.push(new birdie_PSys(birdie_x, birdie_y, random(15, 25)));
+	birdie_sparks.push(new birdie_PSys(birdie_x, birdie_y, random(25, 45)));
 }
 
 //for the fireworks @ end screen
