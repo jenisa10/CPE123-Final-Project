@@ -975,26 +975,23 @@ function dino1Jump() {
 		dy_p1 = -dy_p1
 		jump_count++;
 	}
-	if( p1_y < 560) {
+	if(p1_y < 560) {
 		dy_p1 = -dy_p1
 		jump_count++;
 	}
 	p1_y += dy_p1;
-	
 }
 
-function dino2Jump()
-{
+function dino2Jump() {
 	//decide which way to jump depending if it is true or false
-	if (p2_y > 605)
-	{
+	if (p2_y > 605) {
 		dy_p2 = -dy_p2;
+		jump_count++;
 	}
-	if (p2_y < 560)
-	{
+	if (p2_y < 560) {
 		dy_p2 = -dy_p2;
+		jump_count++;
 	}
-
 	p2_y += dy_p2;
 
 }
