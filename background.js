@@ -285,6 +285,42 @@ function draw(){
 
 	if (scene1 == true) {
 		title();
+
+		rect(300, 200, 80, 80);
+		fill(0);
+		textFont('Courier New');
+		textSize(80);
+		text('W', 315, 260);
+
+		fill(255);
+		rect(300, 285, 80, 80);
+		fill(0);
+		text('S', 315, 345);
+
+		fill(255);
+		rect(210, 285, 80, 80);
+		fill(0);
+		text('A', 225, 345);
+
+		fill(255);
+		rect(385, 285, 80, 80);
+		fill(0);
+		text('D', 395, 345);
+
+		push();
+		fill(0);
+		textSize(50);
+		text('Movement', 220, 400);
+		text('Hit', 110, 315);
+		pop();
+
+		fill(255);
+		rect(110, 200, 80, 80);
+		fill(0);
+		text('~', 125, 250);
+		text('`', 125, 300);
+
+
 	}
 	if (scene2 == true) {
 		back();
@@ -751,7 +787,7 @@ function title(){
 	textSize(80);
 	text('T-Rex Plays Badminton', 100, 100);
 	fill(255);
-	ellipse(600, 400, 100);
+	//ellipse(600, 400, 100);
 	fill(100);
 	rect(400, 540, 400, 160);
 	fill(255);
