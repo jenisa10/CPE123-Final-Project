@@ -26,7 +26,7 @@ const dino_dx_speed = 10;
 const dino_dy_speed = 8;
 
 const bestoftxt = "ELEVEN";
-const bestof = 11;
+const bestof = 2;
 
 const end_of_game_jump_count = 10;
 
@@ -470,8 +470,8 @@ function updatePlayers() {
 			dino2Jump();
 		}
 		if (jump_count > end_of_game_jump_count) {
-			scene2 = false;
-			scene3 = true;
+			//scene2 = false;
+			//scene3 = true;
 		}
 		return;
 	}
@@ -645,8 +645,8 @@ function board(){
 	textSize(36);
 	//textFont('Courier New');
 	text('BEST OF ' + bestoftxt, 450, 270);
-	text('Player 1', 410, 90);
-	text('Player 2', 660, 90);
+	text('Player 1', 390, 90);
+	text('Player 2', 640, 90);
 	//time
 	//if(time <= 60){
 		//fill(255);
