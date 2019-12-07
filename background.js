@@ -28,7 +28,7 @@ const dino_dy_speed = 8;
 const bestoftxt = "ELEVEN";
 const bestof = 11;
 
-const end_of_game_jump_count = 10;
+const end_of_game_jump_count = 50;
 
 var p1_x = 250, p1_y = 600, p1_handR = dino_rotate_beg, p1_state = 0; // state 0: idle, 1: resetting, 2: swinging
 var p2_x = 950, p2_y = 600, p2_handR = dino_rotate_beg, p2_state = 0;
@@ -472,8 +472,8 @@ function updatePlayers() {
 			dino2Jump();
 		}
 		if (jump_count > end_of_game_jump_count) {
-			//scene2 = false;
-			//scene3 = true;
+			scene2 = false;
+			scene3 = true;
 		}
 		return;
 	}
