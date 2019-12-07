@@ -426,10 +426,12 @@ function updateBirdie() {
 			dead = true;
 			if (p1_score == bestof) {
 				p1_jumping = true;
+				deady = p1_y;
 				gameEnded = true;
 			}
 			if (p2_score == bestof) {
 				p2_jumping = true;
+				deady = p2_y;
 				gameEnded = true;
 			}
 		}
@@ -969,13 +971,14 @@ function racket() {
  }
 
 
+var deady = 0;
 function dino1Jump() {
 	//decide which way to jump depending if it is true or false
-	if (p1_y > 605) {
+	if (p1_y > deady+5) {
 		dy_p1 = -dy_p1
 		jump_count++;
 	}
-	if(p1_y < 560) {
+	if(p1_y < deady-40) {
 		dy_p1 = -dy_p1
 		jump_count++;
 	}
@@ -984,11 +987,11 @@ function dino1Jump() {
 
 function dino2Jump() {
 	//decide which way to jump depending if it is true or false
-	if (p2_y > 605) {
+	if (p2_y > deady+5) {
 		dy_p2 = -dy_p2;
 		jump_count++;
 	}
-	if (p2_y < 560) {
+	if (p2_y < deady-40) {
 		dy_p2 = -dy_p2;
 		jump_count++;
 	}
