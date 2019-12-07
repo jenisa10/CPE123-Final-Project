@@ -26,7 +26,7 @@ const dino_dx_speed = 10;
 const dino_dy_speed = 8;
 
 const bestoftxt = "ELEVEN";
-const bestof = 11;
+const bestof = 1;
 
 const end_of_game_jump_count = 50;
 
@@ -53,10 +53,10 @@ var gameEnded = false;
 // declare of a variable to represent a particle system
 var fireW1;
 var birdie_sparks = [];
-var end_fireworks = [];
 var fcol = 1;
 var bpx;
 var bpy;
+var fcounter = 0;
 
 //var birdie_dir = [];
 //var birdie_sc;
@@ -150,7 +150,7 @@ function end_Particle(x , y)
 	}
 	this.locX = x;
 	this.locY = y;
-	this.r = 5.0;
+	this.r = 10.0;
 	this.life = 255;
 
 	this.updateP = function()
@@ -182,6 +182,11 @@ function end_PSys(sX, sY, num)
 
 	this.run = function() 
 	{
+		if(this.particles.length>0){
+			if(this.particles[0].life<=0){
+				this.particles.splice(0,1);
+			}
+		}
 		for (var i=0; i < this.particles.length; i++) 
 		{
 			//update each particle per frame
@@ -192,8 +197,11 @@ function end_PSys(sX, sY, num)
 }
 
 function endFireworkStart(){
-	fcol++
-	end_fireworks.push(new end_PSys(random(width), random(height), random(25, 30)));
+	fcol+=.1
+	fcounter ++
+	if (fcounter % 5 ==0){
+		end_fireworks.push(new end_PSys(random(width), random(height), random(25, 30)));
+	}
 }
 
 function birdie(px, py, dx, dy, s){
@@ -302,6 +310,9 @@ function draw(){
 		for(i=0;i<birdie_sparks.length;i++){
 			birdie_sparks[i].run()
 		}
+		for(i=0;i<end_fireworks.length;i++){
+			end_fireworks[i].run()
+		}
 	//let fps = frameRate();
 	//fill(255);
 	//stroke(0);
@@ -311,6 +322,7 @@ function draw(){
 	if (scene3 == true){
 		endPage();
 	}
+
 }
 
 const dtheta=-0.5;
