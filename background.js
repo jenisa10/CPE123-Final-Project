@@ -294,6 +294,13 @@ function draw(){
 	if (scene1 == true) {
 		title();
 
+		fill(0);
+		textSize(80);
+		text("Player 1", 100, 500);
+		textSize(80);
+		text("Player 2", 750, 500);
+
+		fill(255);
 		rect(300, 200, 80, 80);
 		fill(0);
 		textFont('Courier New');
@@ -328,6 +335,44 @@ function draw(){
 		text('~', 125, 250);
 		text('`', 125, 300);
 
+		push();
+		translate(600, 0);
+		fill(255);
+		rect(300, 200, 80, 80);
+		textSize(80);
+		fill(0);
+		text('^', 315, 270);
+
+		fill(255);
+		rect(300, 285, 80, 80);
+		fill(0);
+		text('v', 315, 345);
+
+		fill(255);
+		rect(210, 285, 80, 80);
+		fill(0);
+		text('<', 225, 345);
+
+		fill(255);
+		rect(385, 285, 80, 80);
+		fill(0);
+		text('>', 395, 345);
+
+		push();
+		fill(0);
+		textSize(50);
+		text('Movement', 220, 400);
+		text('Hit', 110, 315);
+		pop();
+
+		fill(255);
+		rect(110, 200, 80, 80);
+		fill(0);
+		textSize(40);
+		text('>', 135, 240);
+		textSize(50);
+		text('.', 135, 259);
+		pop();
 
 	}
 	if (scene2 == true) {
