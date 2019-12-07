@@ -26,7 +26,7 @@ const dino_dx_speed = 10;
 const dino_dy_speed = 8;
 
 const bestoftxt = "ELEVEN";
-const bestof = 2;
+const bestof = 11;
 
 const end_of_game_jump_count = 10;
 
