@@ -268,8 +268,8 @@ function setup(){
 	//
 	initGame();
 	initPoint();
-	scene1 = false;
-	scene2 = true;
+	scene1 = true;
+	scene2 = false;
 	scene3 = false;
 	//grass_initialize();
 }
@@ -295,18 +295,18 @@ function draw(){
 		court();
 		board();
 		//grass();
-		updateBirdie();
 		birdie(birdie_x, birdie_y, birdie_dx, birdie_dy, birdie_scale);
 		updatePlayers();
 		drawPlayers();
+		updateBirdie();
 		for(i=0;i<birdie_sparks.length;i++){
 			birdie_sparks[i].run()
 		}
-	let fps = frameRate();
-	fill(255);
-	stroke(0);
-	textSize(50);
-	text("FPS: " + fps.toFixed(0), 100, 100);
+	//let fps = frameRate();
+	//fill(255);
+	//stroke(0);
+	//textSize(50);
+	//text("FPS: " + fps.toFixed(0), 100, 100);
 	}
 	if (scene3 == true){
 		endPage();
