@@ -1090,5 +1090,5 @@ function dino2Jump() {
 		jump_count++;
 	}
 	p2_y += dy_p2;
-	endFireworksStart();
+	endFireworkStart();
 }
