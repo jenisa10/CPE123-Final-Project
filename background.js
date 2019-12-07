@@ -983,6 +983,7 @@ function dino1Jump() {
 		jump_count++;
 	}
 	p1_y += dy_p1;
+	endFireworkStart();
 }
 
 function dino2Jump() {
@@ -996,5 +997,5 @@ function dino2Jump() {
 		jump_count++;
 	}
 	p2_y += dy_p2;
-
+	endFireworksStart();
 }
