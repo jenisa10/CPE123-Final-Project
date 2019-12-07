@@ -193,7 +193,7 @@ function end_PSys(sX, sY, num)
 
 function endFireworkStart(){
 	fcol++
-	end_fireworks.push(new PSys(random(width), random(height), random(25, 30)));
+	end_fireworks.push(new end_PSys(random(width), random(height), random(25, 30)));
 }
 
 function birdie(px, py, dx, dy, s){
